@@ -99,3 +99,27 @@ func ExampleFromPointer_nonnil() {
 	// Output:
 	// Hello!
 }
+
+func ExampleFromMapItem() {
+	messages := map[string]string{
+		"departure": "Goodbye!",
+	}
+
+	optional.
+		FromMapItem(messages, "departure").
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+		)
+
+	fmt.Println(
+		optional.IsEmpty(
+			optional.FromMapItem(messages, "arrival"),
+		),
+	)
+
+	// Output:
+	// Goodbye!
+	// true
+}
