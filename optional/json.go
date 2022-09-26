@@ -16,6 +16,8 @@ func NewJSONValue[T any](t T) JSONValue[T] {
 	}
 }
 
+// UnmarshalJSON marshals "null" into an empty optional value, every other string is marshaled into an item
+// wrapped by this value.
 func (value *JSONValue[T]) UnmarshalJSON(data []byte) error {
 	if string(data) == "null" {
 		value.t = nil
@@ -31,6 +33,7 @@ func (value *JSONValue[T]) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON marshals the wrapped item if such item exists. Else, the marshaled JSON is "null".
 func (value JSONValue[T]) MarshalJSON() ([]byte, error) {
 	if value.t == nil {
 		return []byte("null"), nil
@@ -38,6 +41,7 @@ func (value JSONValue[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(*value.t)
 }
 
+// Invoke calls f with the item wrapped if this JSON value is not empty.
 func (value JSONValue[T]) Invoke(f func(item T)) {
 	if value.t != nil {
 		f(*value.t)
