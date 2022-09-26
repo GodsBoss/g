@@ -3,7 +3,8 @@ package optional
 import "encoding/json"
 
 // JSONValue represents an optional value that can marshaled to unmarshaled from JSON.
-// The zero value is a valid empty value of T.
+// The zero value is a valid empty value of T. Unlike the optional values created by
+// NewWithItem() and NewEmpty(), this one can be altered, but only via JSONValue.UnmarshalJSON().
 type JSONValue[T any] struct {
 	t *T
 }

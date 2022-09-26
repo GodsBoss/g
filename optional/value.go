@@ -80,7 +80,8 @@ func IfElse[T any](value Value[T], onValue func(T), onEmpty func()) {
 	}
 }
 
-// NewWithItem creates an optional value that actually wraps an item.
+// NewWithItem creates an optional value that actually wraps an item. The returned value is immutable,
+// i.e. cannot be changed to wrap a different value or no value at all.
 func NewWithItem[T any](t T) Value[T] {
 	return withItem[T]{
 		t: t,
@@ -95,7 +96,8 @@ func (v withItem[T]) Invoke(f func(T)) {
 	f(v.t)
 }
 
-// NewEmpty creates an empty optional value.
+// NewEmpty creates an empty optional value. The returned value is immutable, i.e. cannot be changed
+// to contain a value.
 func NewEmpty[T any]() Value[T] {
 	return empty[T]{}
 }
