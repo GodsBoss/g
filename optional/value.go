@@ -119,6 +119,15 @@ func Pointer[T any](t *T) Value[*T] {
 	return NewWithItem(t)
 }
 
+// Dereferences converts a pointer into an optional value of the referenced type.
+// Nil pointers become empty values, else the pointer's dereferenced value is wrapped.
+func Dereference[T any](t *T) Value[T] {
+	if t == nil {
+		return NewEmpty[T]()
+	}
+	return NewWithItem(*t)
+}
+
 // MapItem takes a map and a key, returning an empty value if that key does not exist
 // in the map, and the corresponding item for that key otherwise.
 func MapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {

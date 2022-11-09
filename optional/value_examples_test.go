@@ -100,6 +100,30 @@ func ExamplePointer_nonnil() {
 	// Hello!
 }
 
+func ExampleDereference_nil() {
+	var ptr *int
+
+	value := optional.Dereference(ptr)
+
+	fmt.Println(optional.HasItem(value))
+
+	// Output:
+	// false
+}
+
+func ExampleDereference_nonnil() {
+	s := "Hello!"
+
+	value := optional.Dereference(&s)
+
+	if item, ok := optional.GetItem(value); ok {
+		fmt.Println(item)
+	}
+
+	// Output:
+	// Hello!
+}
+
 func ExampleMapItem() {
 	messages := map[string]string{
 		"departure": "Goodbye!",
