@@ -37,7 +37,7 @@ func Len[T any](value Value[T]) int {
 }
 
 // GetItem extracts the item from value if such an item exists. If not, the zero value for T is returned.
-// The second return value reports a value could be extracted.
+// The second return value signals whether a value could be extracted.
 func GetItem[T any](value Value[T]) (T, bool) {
 	var item T
 	ok := false
