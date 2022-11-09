@@ -2,7 +2,7 @@ package optionaljson
 
 import "encoding/json"
 
-// Value represents an optional value that can marshaled to unmarshaled from JSON.
+// Value represents an optional value that can marshaled to and unmarshaled from JSON.
 // The zero value is a valid empty value of T. Unlike the optional values created by
 // NewWithItem() and NewEmpty(), this one can be altered, but only via Value.UnmarshalJSON().
 type Value[T any] struct {
