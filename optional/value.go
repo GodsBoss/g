@@ -124,3 +124,12 @@ func MapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {
 	}
 	return NewEmpty[Item]()
 }
+
+// SliceItem takes a slice and an index, returning an empty value if the index is out of
+// bounds for the slice, and the corresponding item for that index otherwise.
+func SliceItem[Item any](s []Item, index int) Value[Item] {
+	if index >= 0 && index < len(s) {
+		return NewWithItem(s[index])
+	}
+	return NewEmpty[Item]()
+}

@@ -123,3 +123,36 @@ func ExampleMapItem() {
 	// Goodbye!
 	// true
 }
+
+func ExampleSliceItem() {
+	items := []string{
+		"foo",
+		"bar",
+		"baz",
+	}
+
+	optional.
+		SliceItem(items, 1).
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+		)
+
+	fmt.Println(
+		optional.IsEmpty(
+			optional.SliceItem(items, -1),
+		),
+	)
+
+	fmt.Println(
+		optional.IsEmpty(
+			optional.SliceItem(items, 8),
+		),
+	)
+
+	// Output:
+	// bar
+	// true
+	// true
+}
