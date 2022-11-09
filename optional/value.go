@@ -115,9 +115,9 @@ func FromPointer[T any](t *T) Value[*T] {
 	return NewWithItem(t)
 }
 
-// FromMapItem takes a map and a key, returning an empty value if that key does not exist
+// MapItem takes a map and a key, returning an empty value if that key does not exist
 // in the map, and the corresponding item for that key otherwise.
-func FromMapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {
+func MapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {
 	item, ok := m[key]
 	if ok {
 		return NewWithItem(item)

@@ -100,13 +100,13 @@ func ExampleFromPointer_nonnil() {
 	// Hello!
 }
 
-func ExampleFromMapItem() {
+func ExampleMapItem() {
 	messages := map[string]string{
 		"departure": "Goodbye!",
 	}
 
 	optional.
-		FromMapItem(messages, "departure").
+		MapItem(messages, "departure").
 		Invoke(
 			func(s string) {
 				fmt.Println(s)
@@ -115,7 +115,7 @@ func ExampleFromMapItem() {
 
 	fmt.Println(
 		optional.IsEmpty(
-			optional.FromMapItem(messages, "arrival"),
+			optional.MapItem(messages, "arrival"),
 		),
 	)
 
