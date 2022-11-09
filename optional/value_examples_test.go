@@ -76,10 +76,10 @@ func ExampleIfElse() {
 	// I am empty.
 }
 
-func ExampleFromPointer_nil() {
+func ExamplePointer_nil() {
 	var ptr *int
 
-	value := optional.FromPointer(ptr)
+	value := optional.Pointer(ptr)
 
 	fmt.Println(optional.HasItem(value))
 
@@ -87,10 +87,10 @@ func ExampleFromPointer_nil() {
 	// false
 }
 
-func ExampleFromPointer_nonnil() {
+func ExamplePointer_nonnil() {
 	s := "Hello!"
 
-	value := optional.FromPointer(&s)
+	value := optional.Pointer(&s)
 
 	if item, ok := optional.GetItem(value); ok {
 		fmt.Println(*item)

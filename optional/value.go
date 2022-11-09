@@ -106,9 +106,9 @@ type empty[T any] struct{}
 
 func (e empty[T]) Invoke(_ func(T)) {}
 
-// FromPointer wraps a pointer into an optional value. nil pointers become empty values,
+// Pointer wraps a pointer into an optional value. nil pointers become empty values,
 // else a value containing an item is returned.
-func FromPointer[T any](t *T) Value[*T] {
+func Pointer[T any](t *T) Value[*T] {
 	if t == nil {
 		return NewEmpty[*T]()
 	}
