@@ -130,6 +130,7 @@ func Dereference[T any](t *T) Value[T] {
 
 // MapItem takes a map and a key, returning an empty value if that key does not exist
 // in the map, and the corresponding item for that key otherwise.
+// Only checks whether a map key exists and may happily wrap zero values (e.g. nil pointers).
 func MapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {
 	item, ok := m[key]
 	if ok {
@@ -140,6 +141,7 @@ func MapItem[Key comparable, Item any](m map[Key]Item, key Key) Value[Item] {
 
 // SliceItem takes a slice and an index, returning an empty value if the index is out of
 // bounds for the slice, and the corresponding item for that index otherwise.
+// Only checks whether the index is in range and may happily wrap zero values (e.g. nil pointers).
 func SliceItem[Item any](s []Item, index int) Value[Item] {
 	if index >= 0 && index < len(s) {
 		return NewWithItem(s[index])
