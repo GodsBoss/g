@@ -1,3 +1,7 @@
+// Package optional implements an optional value, also sometimes called "Maybe".
+//
+// The package is written in a functional style, with many top-level functions that
+// revolve around a simple value type.
 package optional
 
 // Value represents an optional value. It may contain an item of type T.
@@ -6,7 +10,7 @@ type Value[T any] interface {
 	Invoke(f func(item T))
 }
 
-// HasItem checks whether the value actually contains an item.
+// HasItem checks whether the value actually contains an item. Opposite of IsEmpty().
 func HasItem[T any](value Value[T]) bool {
 	hasItem := false
 
@@ -19,7 +23,7 @@ func HasItem[T any](value Value[T]) bool {
 	return hasItem
 }
 
-// IsEmpty checks whether the value is empty.
+// IsEmpty checks whether the value is empty. Opposite of HasItem().
 func IsEmpty[T any](value Value[T]) bool {
 	return !HasItem(value)
 }
