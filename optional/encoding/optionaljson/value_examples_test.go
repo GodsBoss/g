@@ -1,14 +1,15 @@
-package optional_test
+package optionaljson_test
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/GodsBoss/g/optional"
+	"github.com/GodsBoss/g/optional/encoding/optionaljson"
 )
 
-func ExampleJSONValue_MarshalJSON_empty() {
-	var value optional.JSONValue[int]
+func ExampleValue_MarshalJSON_empty() {
+	var value optionaljson.Value[int]
 
 	data, err := json.Marshal(
 		map[string]interface{}{
@@ -26,8 +27,8 @@ func ExampleJSONValue_MarshalJSON_empty() {
 	// {"value":null}
 }
 
-func ExampleJSONValue_MarshalJSON_nonempty() {
-	value := optional.NewJSONValue(5000)
+func ExampleValue_MarshalJSON_nonempty() {
+	value := optionaljson.NewValue(5000)
 
 	data, err := json.Marshal(
 		map[string]interface{}{
@@ -45,9 +46,9 @@ func ExampleJSONValue_MarshalJSON_nonempty() {
 	// {"value":5000}
 }
 
-func ExampleJSONValue_UnmarshalJSON_empty() {
+func ExampleValue_UnmarshalJSON_empty() {
 	object := struct {
-		Value optional.JSONValue[string]
+		Value optionaljson.Value[string]
 	}{}
 
 	err := json.Unmarshal([]byte(`{ "value": null }`), &object)
@@ -70,9 +71,9 @@ func ExampleJSONValue_UnmarshalJSON_empty() {
 	// No value.
 }
 
-func ExampleJSONValue_UnmarshalJSON_nonempty() {
+func ExampleValue_UnmarshalJSON_nonempty() {
 	object := struct {
-		Value optional.JSONValue[string]
+		Value optionaljson.Value[string]
 	}{}
 
 	err := json.Unmarshal(

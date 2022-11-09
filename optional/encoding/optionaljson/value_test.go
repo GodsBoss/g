@@ -1,18 +1,18 @@
-package optional_test
+package optionaljson_test
 
 import (
 	"encoding/json"
 	"errors"
 	"testing"
 
-	"github.com/GodsBoss/g/optional"
+	"github.com/GodsBoss/g/optional/encoding/optionaljson"
 )
 
 func TestErrorUnUnmarshalJSON(t *testing.T) {
 	obj := struct {
-		F optional.JSONValue[brokenJSON]
+		F optionaljson.Value[brokenJSON]
 	}{
-		F: optional.NewJSONValue(brokenJSON{}),
+		F: optionaljson.NewValue(brokenJSON{}),
 	}
 
 	err := json.Unmarshal([]byte(`{ "f": "xyz" }`), &obj)
