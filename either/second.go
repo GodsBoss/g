@@ -1,5 +1,6 @@
 package either
 
+// NewSecond creates an either value wrapping a value of the second type.
 func NewSecond[First any, Second any](second Second) Value[First, Second] {
 	return withItemSecond[First, Second]{
 		item: second,
@@ -14,6 +15,8 @@ func (s withItemSecond[First, Second]) Invoke(_ func(First), ifSecond func(Secon
 	ifSecond(s.item)
 }
 
+// GetSecond returns the wrapped second type value of an either value. It returns the zero value
+// if the either value wrapped a value of the first type.
 func GetSecond[First any, Second any](value Value[First, Second]) (item Second, ok bool) {
 	Invoke(
 		value,
@@ -27,6 +30,7 @@ func GetSecond[First any, Second any](value Value[First, Second]) (item Second, 
 	return
 }
 
+// HasSecond checks whether the either value wraps a value of the second type.
 func HasSecond[First any, Second any](value Value[First, Second]) bool {
 	_, ok := GetSecond(value)
 	return ok
