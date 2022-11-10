@@ -1,4 +1,9 @@
 g
 =
 
-**g** contains [Go](https://go.dev/) utility modules for generics.
+**g**eneric [Go](https://go.dev/) utility modules.
+
+List of modules:
+
+- [./either]
+- [./optional]
