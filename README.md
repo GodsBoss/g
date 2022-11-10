@@ -5,5 +5,5 @@ g
 
 List of modules:
 
-- [./either]
-- [./optional]
+- [either](./either)
+- [optional](./optional/)
