@@ -61,3 +61,13 @@ func ToSlices[First any, Second any](value Value[First, Second]) ([]First, []Sec
 
 	return firsts, seconds
 }
+
+// FromErrorResult wraps the result of a function that returns a value or an error, like http.NewRequest
+// or regexp.Compile. If the error is nil, item is wrapped, else err is wrapped.
+func FromErrorResult[Item any](item Item, err error) Value[Item, error] {
+	if err != nil {
+		return NewSecond[Item](err)
+	}
+
+	return NewFirst[Item, error](item)
+}

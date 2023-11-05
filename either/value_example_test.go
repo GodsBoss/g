@@ -1,6 +1,7 @@
 package either_test
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/GodsBoss/g/either"
@@ -62,4 +63,37 @@ func ExampleToSlices_second() {
 	// number count  : 0
 	// messages count: 1
 	// 1981
+}
+
+func ExampleFromErrorResult() {
+	// f stands in for a function that returns a value or an error.
+	f := func(s string, err error) (string, error) {
+		return s, err
+	}
+
+	either.
+		FromErrorResult(f("Hello, world!", error(nil))).
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+			func(err error) {
+				fmt.Println(err)
+			},
+		)
+
+	either.
+		FromErrorResult(f("Nothing", errors.New("something is broken"))).
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+			func(err error) {
+				fmt.Println(err)
+			},
+		)
+
+	// Output:
+	// Hello, world!
+	// something is broken
 }
