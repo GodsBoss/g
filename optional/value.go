@@ -148,3 +148,14 @@ func SliceItem[Item any](s []Item, index int) Value[Item] {
 	}
 	return NewEmpty[Item]()
 }
+
+// FromOKResult wraps the result of a function that returns an Item and a boolean to indicate whether
+// it returned a value. Returns an empty value if ok is false, else wraps item. Does not check for
+// zero values, so a (nil, true) return value would result in a non-empty result.
+func FromOKResult[Item any](item Item, ok bool) Value[Item] {
+	if ok {
+		return NewWithItem(item)
+	}
+
+	return NewEmpty[Item]()
+}

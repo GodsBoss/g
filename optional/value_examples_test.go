@@ -180,3 +180,30 @@ func ExampleSliceItem() {
 	// true
 	// true
 }
+
+func ExampleFromOKResult() {
+	// f stands in for functions that return a value and a boolean to indicate whether the
+	// return value is meaningful, e.g. os.LookupEnv or strings.CutPrefix.
+	f := func(s string, ok bool) (string, bool) {
+		return s, ok
+	}
+
+	optional.
+		FromOKResult(f("Hello, world!", true)).
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+		)
+
+	optional.
+		FromOKResult(f("none", false)).
+		Invoke(
+			func(s string) {
+				fmt.Println(s)
+			},
+		)
+
+	// Output:
+	// Hello, world!
+}
