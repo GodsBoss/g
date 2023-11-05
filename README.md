@@ -1,7 +1,7 @@
 g
 =
 
-**g**eneric [Go](https://go.dev/) utility modules.
+[**G**o](https://go.dev/) utility modules.
 
 List of modules:
 
