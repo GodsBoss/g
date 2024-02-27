@@ -84,6 +84,18 @@ func IfElse[T any](value Value[T], onValue func(T), onEmpty func()) {
 	}
 }
 
+// If calls onValue for values wrapping an item, passing said item. Nothing is done if the value
+// is empty. onValue may be nil.
+func If[T any](value Value[T], onValue func(T)) {
+	IfElse(value, onValue, nil)
+}
+
+// Else calls onEmpty for values that are empty. Nothing is done if the value actually wraps an item.
+// onEmpty may be nil.
+func Else[T any](value Value[T], onEmpty func()) {
+	IfElse(value, nil, onEmpty)
+}
+
 // NewWithItem creates an optional value that actually wraps an item. The returned value is immutable,
 // i.e. cannot be changed to wrap a different value or no value at all.
 func NewWithItem[T any](t T) Value[T] {

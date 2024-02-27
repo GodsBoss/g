@@ -76,6 +76,50 @@ func ExampleIfElse() {
 	// I am empty.
 }
 
+func ExampleIf() {
+	valueWithItem := optional.NewWithItem("I am an item.")
+	emptyValue := optional.NewEmpty[string]()
+
+	optional.If(
+		valueWithItem,
+		func(s string) {
+			fmt.Println("First: " + s)
+		},
+	)
+
+	optional.If(
+		emptyValue,
+		func(s string) {
+			fmt.Println("Second: " + s)
+		},
+	)
+
+	// Output:
+	// First: I am an item.
+}
+
+func ExampleElse() {
+	valueWithItem := optional.NewWithItem("I am an item.")
+	emptyValue := optional.NewEmpty[string]()
+
+	optional.Else(
+		valueWithItem,
+		func() {
+			fmt.Println("First.")
+		},
+	)
+
+	optional.Else(
+		emptyValue,
+		func() {
+			fmt.Println("Second.")
+		},
+	)
+
+	// Output:
+	// Second.
+}
+
 func ExamplePointer_nil() {
 	var ptr *int
 
