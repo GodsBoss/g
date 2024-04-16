@@ -28,14 +28,14 @@ func From(parents ...context.Context) (context.Context, context.CancelCauseFunc)
 		go func(parent context.Context, done <-chan struct{}) {
 			select {
 			case <-parent.Done():
-				mc.cancel(parent.Err())
+				mc.cancel(parent.Err(), context.Cause(parent))
 			case <-done:
 			}
 		}(parents[i], mc.done)
 	}
 
 	return mc, func(err error) {
-		mc.cancel(context.Canceled)
+		mc.cancel(context.Canceled, err)
 	}
 }
 
@@ -56,12 +56,17 @@ type multicontext struct {
 }
 
 // cancel closes the done channel and sets this context's error to err. Only the first call takes effect.
-func (mc *multicontext) cancel(err error) {
+func (mc *multicontext) cancel(err error, cause error) {
 	mc.cancelOnce.Do(
 		func() {
 			mc.lock.Lock()
 			mc.err = err
 			close(mc.done)
+
+			causeHolder, cancel := context.WithCancelCause(context.Background())
+			cancel(cause)
+			mc.parents = append([]context.Context{causeHolder}, mc.parents...)
+
 			mc.lock.Unlock()
 		},
 	)
@@ -127,6 +132,9 @@ func (mc *multicontext) Err() error {
 }
 
 func (mc *multicontext) Value(key any) any {
+	mc.lock.RLock()
+	defer mc.lock.RUnlock()
+
 	for i := range mc.parents {
 		if value := mc.parents[i].Value(key); value != nil {
 			return value

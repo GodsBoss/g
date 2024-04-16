@@ -2,6 +2,7 @@ package multicontext_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -102,5 +103,66 @@ func TestGettingValues(t *testing.T) {
 	rawBaz := ctx.Value("baz")
 	if baz, ok := rawBaz.(int); !ok || baz != 4 {
 		t.Errorf("expected baz to be %d, got %+v", 4, rawBaz)
+	}
+}
+
+func TestCauseAfterCancel(t *testing.T) {
+	t.Parallel()
+
+	ctx, cancel := multicontext.From()
+	err := errors.New("this is some error")
+
+	cancel(err)
+
+	cause := context.Cause(ctx)
+
+	if cause != err {
+		t.Errorf("expected cause %v, got %v", err, cause)
+	}
+}
+
+func TestCauseAfterParentCancel(t *testing.T) {
+	t.Parallel()
+
+	parent, parentCancel := context.WithCancelCause(context.Background())
+	ctx, cancel := multicontext.From(parent)
+
+	parentCause := errors.New("parent error")
+	ctxCause := errors.New("context error")
+
+	parentCancel(parentCause)
+
+	<-ctx.Done()
+
+	cancel(ctxCause)
+
+	if cause := context.Cause(ctx); cause != parentCause {
+		t.Errorf("expected cause %v, got %v", parentCause, cause)
+	}
+}
+
+func TestCausePassesToChildren(t *testing.T) {
+	ctx, cancel := multicontext.From()
+
+	child, _ := context.WithCancel(ctx)
+
+	ctxCause := errors.New("child error")
+
+	cancel(ctxCause)
+
+	<-child.Done()
+
+	if cause := context.Cause(child); cause != ctxCause {
+		t.Errorf("expected cause %v, got %v", ctxCause, cause)
+	}
+}
+
+func TestCancelWithNil(t *testing.T) {
+	ctx, cancel := multicontext.From()
+
+	cancel(nil)
+
+	if err, cause := ctx.Err(), context.Cause(ctx); err != cause {
+		t.Errorf("expected equal cause and error, got cause %v and error %v", cause, err)
 	}
 }
