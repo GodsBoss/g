@@ -67,7 +67,7 @@ func (mc *multicontext) cancel(err error, cause error) {
 			close(mc.done)
 
 			// We can't set a cause directly on this context as the cause is an unexported field of the unexported
-			// context type for cancelations and the cancelation instance is retrieved via context.Value() using
+			// context type for cancellations and the cancellation instance is retrieved via context.Value() using
 			// an unexported variable. We therefore "cheat" by creating a new context that is immediately
 			// canceled with a cause and prepend that to the list of parents. context.Cause(mc) then calls context.Value()
 			// on our multicontext, that call is passed to the canceled context containing our cause and voilà,
