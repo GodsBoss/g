@@ -15,7 +15,7 @@ import (
 // Canceling any of the parent contexts cancels the multicontext.
 //
 // Values returned by the multicontext are taken from the parent contexts depth-first, left to right.
-func From(parents ...context.Context) (context.Context, context.CancelFunc) {
+func From(parents ...context.Context) (context.Context, context.CancelCauseFunc) {
 	parents = filterNopContexts(parents)
 
 	mc := &multicontext{
@@ -34,7 +34,7 @@ func From(parents ...context.Context) (context.Context, context.CancelFunc) {
 		}(parents[i], mc.done)
 	}
 
-	return mc, func() {
+	return mc, func(err error) {
 		mc.cancel(context.Canceled)
 	}
 }

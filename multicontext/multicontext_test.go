@@ -12,7 +12,7 @@ func TestCancelContext(t *testing.T) {
 	t.Parallel()
 
 	ctx, cancel := multicontext.From()
-	cancel()
+	cancel(nil)
 
 	if err := ctx.Err(); err != context.Canceled {
 		t.Errorf("expected context to return %s, got %+v", context.Canceled, err)
@@ -71,7 +71,7 @@ func TestCancelingChildContex(t *testing.T) {
 
 	childCtx, _ := context.WithCancel(ctx)
 
-	cancel()
+	cancel(nil)
 
 	timer := time.NewTimer(time.Millisecond)
 
