@@ -3,6 +3,8 @@ package multicontext_test
 import (
 	"context"
 	"errors"
+	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -164,5 +166,40 @@ func TestCancelWithNil(t *testing.T) {
 
 	if err, cause := ctx.Err(), context.Cause(ctx); err != cause {
 		t.Errorf("expected equal cause and error, got cause %v and error %v", cause, err)
+	}
+}
+
+func TestStringifiedContextContainsParents(t *testing.T) {
+	// We test whether stringification of the multicontext contains stringifications of the parent contexts.
+
+	// deadlineCtx is a context with a deadline. Sadly, the string representation of a deadline contains the
+	// difference to the current time with a nanosecond precision, so the resulting string differs between invokations.
+	// We therefore just check date and time.
+	deadlineCtx, _ := context.WithDeadline(context.Background(), time.Date(2025, 3, 5, 18, 30, 0, 0, time.UTC))
+	deadlineCtxString := "2025-03-05 18:30:00"
+
+	cancelCtx, _ := context.WithCancel(context.Background())
+	cancelCtxString := fmt.Sprint(cancelCtx)
+
+	ctx, _ := multicontext.From(deadlineCtx, cancelCtx)
+	ctxString := fmt.Sprint(ctx)
+
+	deadlinePos := strings.Index(ctxString, deadlineCtxString)
+	cancelPos := strings.Index(ctxString, cancelCtxString)
+
+	if deadlinePos == -1 {
+		t.Errorf("expected context string to contain '%s', got '%s'", deadlineCtxString, ctxString)
+	}
+
+	if cancelPos == -1 {
+		t.Errorf("expected context string to contain '%s', got '%s'", cancelCtxString, ctxString)
+	}
+
+	if deadlinePos == -1 || cancelPos == -1 {
+		return
+	}
+
+	if deadlinePos > cancelPos {
+		t.Errorf("expected '%s' before '%s', got '%s'", deadlineCtxString, cancelCtxString, ctxString)
 	}
 }

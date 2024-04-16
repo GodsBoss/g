@@ -3,6 +3,8 @@ package multicontext
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"sync"
 	"time"
 )
@@ -46,6 +48,9 @@ type multicontext struct {
 	// parents stores the parent contexts. This is only used for fetching values from them.
 	parents []context.Context
 
+	// causeHolder holds the cancellation's cause.
+	causeHolder context.Context
+
 	deadline *time.Time
 
 	done chan struct{}
@@ -69,13 +74,13 @@ func (mc *multicontext) cancel(err error, cause error) {
 			// We can't set a cause directly on this context as the cause is an unexported field of the unexported
 			// context type for cancellations and the cancellation instance is retrieved via context.Value() using
 			// an unexported variable. We therefore "cheat" by creating a new context that is immediately
-			// canceled with a cause and prepend that to the list of parents. context.Cause(mc) then calls context.Value()
+			// canceled with a cause and store it. context.Cause(mc) then calls context.Value()
 			// on our multicontext, that call is passed to the canceled context containing our cause and voilà,
 			// the cause is extracted correctly.
 			if cause != err {
-				causeHolder, cancel := context.WithCancelCause(context.Background())
+				var cancel context.CancelCauseFunc
+				mc.causeHolder, cancel = context.WithCancelCause(context.Background())
 				cancel(cause)
-				mc.parents = append([]context.Context{causeHolder}, mc.parents...)
 			}
 
 			mc.lock.Unlock()
@@ -146,6 +151,12 @@ func (mc *multicontext) Value(key any) any {
 	mc.lock.RLock()
 	defer mc.lock.RUnlock()
 
+	if mc.causeHolder != nil {
+		if value := mc.causeHolder.Value(key); value != nil {
+			return value
+		}
+	}
+
 	for i := range mc.parents {
 		if value := mc.parents[i].Value(key); value != nil {
 			return value
@@ -153,4 +164,14 @@ func (mc *multicontext) Value(key any) any {
 	}
 
 	return nil
+}
+
+func (mc *multicontext) String() string {
+	contextStrings := make([]string, len(mc.parents))
+
+	for i := range mc.parents {
+		contextStrings[i] = fmt.Sprint(mc.parents[i])
+	}
+
+	return "multicontext(" + strings.Join(contextStrings, ", ") + ")"
 }
