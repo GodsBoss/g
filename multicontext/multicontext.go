@@ -15,6 +15,9 @@ import (
 // Canceling any of the parent contexts cancels the multicontext.
 //
 // Values returned by the multicontext are taken from the parent contexts depth-first, left to right.
+//
+// Canceling this context releases resources associated with it, so code should call cancel as soon as
+// the operations running in this Context complete.
 func From(parents ...context.Context) (context.Context, context.CancelCauseFunc) {
 	parents = filterNopContexts(parents)
 
