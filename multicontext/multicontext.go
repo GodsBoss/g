@@ -63,9 +63,11 @@ func (mc *multicontext) cancel(err error, cause error) {
 			mc.err = err
 			close(mc.done)
 
-			causeHolder, cancel := context.WithCancelCause(context.Background())
-			cancel(cause)
-			mc.parents = append([]context.Context{causeHolder}, mc.parents...)
+			if cause != err {
+				causeHolder, cancel := context.WithCancelCause(context.Background())
+				cancel(cause)
+				mc.parents = append([]context.Context{causeHolder}, mc.parents...)
+			}
 
 			mc.lock.Unlock()
 		},
