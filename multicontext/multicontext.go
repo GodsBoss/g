@@ -52,17 +52,17 @@ type multicontext struct {
 
 	err error
 
-	errLock sync.RWMutex
+	lock sync.RWMutex
 }
 
 // cancel closes the done channel and sets this context's error to err. Only the first call takes effect.
 func (mc *multicontext) cancel(err error) {
 	mc.cancelOnce.Do(
 		func() {
-			mc.errLock.Lock()
+			mc.lock.Lock()
 			mc.err = err
 			close(mc.done)
-			mc.errLock.Unlock()
+			mc.lock.Unlock()
 		},
 	)
 }
@@ -120,9 +120,9 @@ func (mc *multicontext) Done() <-chan struct{} {
 }
 
 func (mc *multicontext) Err() error {
-	mc.errLock.RLock()
+	mc.lock.RLock()
 	err := mc.err
-	mc.errLock.RUnlock()
+	mc.lock.RUnlock()
 	return err
 }
 
