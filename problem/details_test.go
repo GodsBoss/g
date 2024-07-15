@@ -169,6 +169,24 @@ func TestMarshalJSON(t *testing.T) {
 				}
 			},
 		},
+		"extension": {
+			details: problem.Details{
+				ExtensionMembers: map[string]any{
+					"title": "ignored",
+					"extra": "included",
+				},
+			},
+			check: func(t *testing.T, values map[string]interface{}) {
+				title, ok := values["title"]
+				if ok {
+					t.Errorf("expected no title, got %v", title)
+				}
+				extra, ok := values["extra"].(string)
+				if !ok || extra != "included" {
+					t.Errorf("expected 'extra' to be '%s' (string), got %v (%T)", "included", values["extra"], values["extra"])
+				}
+			},
+		},
 		"fields_populated": {
 			details: problem.Details{
 				Type:     "https://example.org/problems/not-enough-jquery",

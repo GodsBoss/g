@@ -43,6 +43,15 @@ func (d Details) StatusText() string {
 
 func (d Details) MarshalJSON() ([]byte, error) {
 	m := map[string]any{}
+
+	for k, v := range d.ExtensionMembers {
+		m[k] = v
+	}
+
+	for _, k := range memberFields {
+		delete(m, k)
+	}
+
 	if d.Type != "" {
 		m["type"] = d.Type
 	}
