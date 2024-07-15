@@ -22,8 +22,9 @@ type Details[Extension any] struct {
 	// Instance is a URI reference that identifies the specific occurence of the problem. Optional.
 	Instance string
 
-	// invalidMembers stores members that contained unexpected types on unmarshalling.
-	invalidMembers map[string]any
+	// InvalidMembers contains fields that matched the problem details member names, but not their types.
+	// Populated when unmarshalling, ignored on marshalling.
+	InvalidMembers map[string]any
 
 	extension    *Extension
 	extensionErr error
@@ -31,13 +32,6 @@ type Details[Extension any] struct {
 
 func (d Details[_]) StatusText() string {
 	return http.StatusText(d.Status)
-}
-
-// InvalidMembers returns members that match the defined members of the problem details RFC, but contained values
-// with different types than expected, e.g. a "status" with type boolean or an "instance" with type object.
-// Clients must not change the return value of this method.
-func (d Details[_]) InvalidMembers() map[string]any {
-	return d.invalidMembers
 }
 
 func (d Details[Extension]) Extension() (*Extension, error) {
@@ -99,7 +93,7 @@ func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
 		d.Type = "about:blank"
 	}
 
-	d.invalidMembers = invalidMembers
+	d.InvalidMembers = invalidMembers
 
 	for _, field := range memberFields {
 		delete(tmp, field)

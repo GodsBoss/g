@@ -63,7 +63,7 @@ func TestUnmarshalJSON(t *testing.T) {
 			if instance := details.Instance; instance != "" {
 				t.Errorf("expected no instance, got '%s'", instance)
 			}
-			invalidMembers := details.InvalidMembers()
+			invalidMembers := details.InvalidMembers
 			if l := len(invalidMembers); l != 5 {
 				t.Errorf("expected 5 invalid members, got %+v", invalidMembers)
 			}
