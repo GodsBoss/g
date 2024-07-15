@@ -21,10 +21,20 @@ type Details struct {
 
 	// Instance is a URI reference that identifies the specific occurence of the problem. Optional.
 	Instance string
+
+	// invalidMembers stores members that contained unexpected types on unmarshalling.
+	invalidMembers map[string]any
 }
 
 func (d Details) StatusText() string {
 	return http.StatusText(d.Status)
+}
+
+// InvalidMembers returns members that match the defined members of the problem details RFC, but contained values
+// with different types than expected, e.g. a "status" with type boolean or an "instance" with type object.
+// Clients must not change the return value of this method.
+func (d Details) InvalidMembers() map[string]any {
+	return d.invalidMembers
 }
 
 func (d *Details) UnmarshalJSON(data []byte) error {
@@ -34,31 +44,40 @@ func (d *Details) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	d.Type = toType[string](tmp["type"])
-	d.Title = toType[string](tmp["title"])
-	d.Detail = toType[string](tmp["detail"])
-	d.Instance = toType[string](tmp["instance"])
+	invalidMembers := make(map[string]any)
 
-	statusAsFloat64 := toType[float64](tmp["status"])
+	d.Title = toType[string](tmp, "title", invalidMembers)
+	d.Detail = toType[string](tmp, "detail", invalidMembers)
+	d.Instance = toType[string](tmp, "instance", invalidMembers)
+
+	statusAsFloat64 := toType[float64](tmp, "status", invalidMembers)
 	d.Status = int(statusAsFloat64)
 	if statusAsFloat64 < math.MinInt || statusAsFloat64 > math.MaxInt {
 		d.Status = 0
 	}
 
+	d.Type = toType[string](tmp, "type", invalidMembers)
 	if d.Type == "" {
 		d.Type = "about:blank"
 	}
 
+	d.invalidMembers = invalidMembers
+
 	return nil
 }
 
-func toType[T any](value any) T {
-	typed, ok := value.(T)
-	if ok {
-		return typed
+func toType[T any](generic map[string]any, name string, otherwiseTarget map[string]any) (typed T) {
+	value, ok := generic[name]
+	if !ok {
+		return
 	}
 
-	var zero T
+	typed, ok = value.(T)
+	if ok {
+		return
+	}
 
-	return zero
+	otherwiseTarget[name] = value
+
+	return
 }
