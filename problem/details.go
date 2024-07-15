@@ -59,7 +59,10 @@ func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
 
 	statusAsFloat64 := toType[float64](tmp, "status", invalidMembers)
 	d.Status = int(statusAsFloat64)
-	if statusAsFloat64 < math.MinInt || statusAsFloat64 > math.MaxInt {
+	if statusAsFloat64 < math.MinInt {
+		d.Status = 0
+	}
+	if statusAsFloat64 > math.MaxInt {
 		d.Status = 0
 	}
 

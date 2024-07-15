@@ -76,6 +76,16 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected status text '%s', got '%s'", expectedStatusText, actualStatusText)
 			}
 		},
+		"status_too_big": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+			if status := details.Status; status != 0 {
+				t.Errorf("expected status code %d, got %d", 0, status)
+			}
+		},
+		"status_too_small": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+			if status := details.Status; status != 0 {
+				t.Errorf("expected status code %d, got %d", 0, status)
+			}
+		},
 		"title": func(t *testing.T, details problem.Details[map[string]interface{}]) {
 			if title := details.Title; title != "JSON broken" {
 				t.Errorf("expected title '%s', got '%s'", "JSON broken", title)
