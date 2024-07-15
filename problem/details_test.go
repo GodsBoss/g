@@ -25,6 +25,11 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected title '%s', got '%s'", "JSON broken", title)
 			}
 		},
+		"detail": func(t *testing.T, details problem.Details) {
+			if detail := details.Detail; detail != "This API does not understand SOAP." {
+				t.Errorf("expected detail '%s', got '%s'", "This API does not understand SOAP.", detail)
+			}
+		},
 	}
 
 	for name := range testcases {

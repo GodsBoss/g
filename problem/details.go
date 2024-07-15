@@ -8,6 +8,9 @@ type Details struct {
 
 	// Title is a human-readable summary of the problem type.
 	Title string
+
+	// Detail is a human-readable explanation specific to this occurence of the problem.
+	Detail string
 }
 
 func (d Details) StatusText() string {
