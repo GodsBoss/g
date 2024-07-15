@@ -12,6 +12,11 @@ import (
 
 func TestUnmarshalJSON(t *testing.T) {
 	testcases := map[string]func(t *testing.T, details problem.Details){
+		"default_type": func(t *testing.T, details problem.Details) {
+			if typ := details.Type; typ != "about:blank" {
+				t.Errorf("expected type '%s', got '%s'", "about:blank", typ)
+			}
+		},
 		"detail": func(t *testing.T, details problem.Details) {
 			if detail := details.Detail; detail != "This API does not understand SOAP." {
 				t.Errorf("expected detail '%s', got '%s'", "This API does not understand SOAP.", detail)
