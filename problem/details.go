@@ -2,6 +2,7 @@ package problem
 
 import (
 	"encoding/json"
+	"math"
 	"net/http"
 )
 
@@ -27,23 +28,37 @@ func (d Details) StatusText() string {
 }
 
 func (d *Details) UnmarshalJSON(data []byte) error {
-	type details Details
-
-	var tmp details
+	var tmp map[string]any
 
 	if err := json.Unmarshal(data, &tmp); err != nil {
 		return err
 	}
 
-	d.Type = tmp.Type
-	d.Status = tmp.Status
-	d.Title = tmp.Title
-	d.Detail = tmp.Detail
-	d.Instance = tmp.Instance
+	d.Type = toType[string](tmp["type"])
+	d.Title = toType[string](tmp["title"])
+	d.Detail = toType[string](tmp["detail"])
+	d.Instance = toType[string](tmp["instance"])
+
+	statusAsFloat64 := toType[float64](tmp["status"])
+	d.Status = int(statusAsFloat64)
+	if statusAsFloat64 < math.MinInt || statusAsFloat64 > math.MaxInt {
+		d.Status = 0
+	}
 
 	if d.Type == "" {
 		d.Type = "about:blank"
 	}
 
 	return nil
+}
+
+func toType[T any](value any) T {
+	typed, ok := value.(T)
+	if ok {
+		return typed
+	}
+
+	var zero T
+
+	return zero
 }

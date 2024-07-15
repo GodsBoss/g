@@ -28,6 +28,23 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected instance '%s', got '%s'", "https://api.example.org/problems/instances/666", instance)
 			}
 		},
+		"members_with_different_types": func(t *testing.T, details problem.Details) {
+			if typ := details.Type; typ != "about:blank" {
+				t.Errorf("expected type '%s', got '%s'", "about:blank", typ)
+			}
+			if status := details.Status; status != 0 {
+				t.Errorf("expected status %d, got %d", 0, status)
+			}
+			if title := details.Title; title != "" {
+				t.Errorf("expected no title, got '%s'", title)
+			}
+			if detail := details.Detail; detail != "" {
+				t.Errorf("expected no detail, got '%s'", detail)
+			}
+			if instance := details.Instance; instance != "" {
+				t.Errorf("expected no instance, got '%s'", instance)
+			}
+		},
 		"status_400": func(t *testing.T, details problem.Details) {
 			if status := details.Status; status != 400 {
 				t.Errorf("expected status code %d, got %d", 400, status)
