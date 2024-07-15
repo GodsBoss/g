@@ -158,3 +158,62 @@ func TestUnmarshalBrokenExtension(t *testing.T) {
 		t.Error("expected an extension error")
 	}
 }
+
+func TestMarshalJSON(t *testing.T) {
+	testcases := map[string]struct {
+		details problem.Details[map[string]interface{}]
+		check   func(t *testing.T, value map[string]interface{})
+	}{
+		"empty": {
+			check: func(t *testing.T, values map[string]interface{}) {
+				if len(values) != 1 {
+					t.Errorf("expected only %d value, got %+v", 1, values)
+				}
+				if status, ok := values["status"]; ok {
+					t.Errorf("expected no status, got %+v", status)
+				}
+				if title, ok := values["title"]; ok {
+					t.Errorf("expected no title, got %+v", title)
+				}
+				if detail, ok := values["detail"]; ok {
+					t.Errorf("expected no detail, got %+v", detail)
+				}
+				if instance, ok := values["instance"]; ok {
+					t.Errorf("expected no instance, got %+v", instance)
+				}
+				typ, ok := values["type"]
+				if !ok {
+					t.Fatal("expected a type")
+				}
+				typAsString, ok := typ.(string)
+				if !ok {
+					t.Fatalf("expected type to be string, got %T", typ)
+				}
+				if typAsString != "about:blank" {
+					t.Errorf("expected type to be '%s', got '%s'", "about:blank", typAsString)
+				}
+			},
+		},
+	}
+
+	for name := range testcases {
+		testcase := testcases[name]
+
+		t.Run(
+			name,
+			func(t *testing.T) {
+				data, err := json.Marshal(testcase.details)
+				if err != nil {
+					t.Fatalf("could not marshal problem details: %v", err)
+				}
+
+				var dest map[string]interface{}
+				if err := json.Unmarshal(data, &dest); err != nil {
+					t.Fatalf("could not unmarshal into map: %v", err)
+				}
+
+				testcase.check(t, dest)
+			},
+		)
+	}
+}

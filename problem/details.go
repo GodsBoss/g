@@ -44,6 +44,16 @@ func (d Details[Extension]) Extension() (*Extension, error) {
 	return d.extension, d.extensionErr
 }
 
+func (d Details[Extension]) MarshalJSON() ([]byte, error) {
+	m := map[string]any{}
+
+	if d.Type == "" {
+		m["type"] = "about:blank"
+	}
+
+	return json.Marshal(m)
+}
+
 func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
 	var tmp map[string]any
 
