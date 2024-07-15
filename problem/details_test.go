@@ -30,6 +30,12 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected detail '%s', got '%s'", "This API does not understand SOAP.", detail)
 			}
 		},
+		"type": func(t *testing.T, details problem.Details) {
+			typ := details.Type
+			if typ != "https://api.example.org/foo/bar/123" {
+				t.Errorf("expected type '%s', got '%s'", "https://api.example.org/foo/bar/123", typ)
+			}
+		},
 	}
 
 	for name := range testcases {

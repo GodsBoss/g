@@ -3,6 +3,9 @@ package problem
 import "net/http"
 
 type Details struct {
+	// Type is a URI reference that identifies the problem type. Defaults to "about:blank".
+	Type string
+
 	// Status is the HTTP status code. May be 0.
 	Status int
 
