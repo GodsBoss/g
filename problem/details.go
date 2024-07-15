@@ -52,30 +52,25 @@ func (d Details) MarshalJSON() ([]byte, error) {
 		delete(m, k)
 	}
 
-	if d.Type != "" {
-		m["type"] = d.Type
-	}
+	addNonZero(m, "type", d.Type)
+	addNonZero(m, "status", d.Status)
+	addNonZero(m, "title", d.Title)
+	addNonZero(m, "detail", d.Detail)
+	addNonZero(m, "instance", d.Instance)
 
-	if d.Status != 0 {
-		m["status"] = d.Status
-	}
-
-	if d.Title != "" {
-		m["title"] = d.Title
-	}
-
-	if d.Detail != "" {
-		m["detail"] = d.Detail
-	}
-
-	if d.Instance != "" {
-		m["instance"] = d.Instance
-	}
 	if d.Type == "" {
 		m["type"] = "about:blank"
 	}
 
 	return json.Marshal(m)
+}
+
+// addNonZero adds an entry to a map if the value is not the zero value.
+func addNonZero[T comparable](m map[string]any, key string, value T) {
+	var zero T
+	if value != zero {
+		m[key] = value
+	}
 }
 
 func (d *Details) UnmarshalJSON(data []byte) error {
