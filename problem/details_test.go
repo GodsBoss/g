@@ -112,3 +112,17 @@ func TestUnmarshalJSON(t *testing.T) {
 		)
 	}
 }
+
+func TestUnmarshalMismatchingJSON(t *testing.T) {
+	filename := "testdata/bool.json"
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		t.Fatalf("could not read file '%s': %v", filename, err)
+	}
+
+	var details problem.Details[map[string]any]
+
+	if err := json.Unmarshal(data, &details); err == nil {
+		t.Error("expected an error")
+	}
+}
