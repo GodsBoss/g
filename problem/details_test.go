@@ -194,6 +194,40 @@ func TestMarshalJSON(t *testing.T) {
 				}
 			},
 		},
+		"fields_populated": {
+			details: problem.Details[map[string]interface{}]{
+				Type:     "https://example.org/problems/not-enough-jquery",
+				Status:   400,
+				Title:    "Not enough jQuery",
+				Detail:   "Your attempted solution does not contain enough jQuery to be accepted",
+				Instance: "https://example.org/problems/not-enough-jquery#0001",
+			},
+			check: func(t *testing.T, values map[string]interface{}) {
+				if len(values) != 5 {
+					t.Errorf("expected %d values, got %+v", 5, values)
+				}
+				typ, ok := values["type"].(string)
+				if !ok || typ != "https://example.org/problems/not-enough-jquery" {
+					t.Errorf("expected 'type' to be '%s' (string), got %v (%T)", "https://example.org/problems/not-enough-jquery", values["type"], values["type"])
+				}
+				status, ok := values["status"].(float64)
+				if !ok || int(status) != 400 {
+					t.Errorf("expected 'status' to be %d (integer), got %v (%T)", 400, values["status"], values["status"])
+				}
+				title, ok := values["title"].(string)
+				if !ok || title != "Not enough jQuery" {
+					t.Errorf("expected 'title' to be '%s' (string), got %v (%T)", "Not enough jQuery", values["title"], values["title"])
+				}
+				detail, ok := values["detail"].(string)
+				if !ok || detail != "Your attempted solution does not contain enough jQuery to be accepted" {
+					t.Errorf("expected  'detail' to be '%s' (string), got %v (%T)", "Your attempted solution does not contain enough jQuery to be accepted", values["detail"], values["detail"])
+				}
+				instance, ok := values["instance"].(string)
+				if !ok || instance != "https://example.org/problems/not-enough-jquery#0001" {
+					t.Errorf("expected 'instance' to be '%s' (string), got %v (%T)", "https://example.org/problems/not-enough-jquery#0001", values["instance"], values["instance"])
+				}
+			},
+		},
 	}
 
 	for name := range testcases {

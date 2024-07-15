@@ -46,7 +46,25 @@ func (d Details[Extension]) Extension() (*Extension, error) {
 
 func (d Details[Extension]) MarshalJSON() ([]byte, error) {
 	m := map[string]any{}
+	if d.Type != "" {
+		m["type"] = d.Type
+	}
 
+	if d.Status != 0 {
+		m["status"] = d.Status
+	}
+
+	if d.Title != "" {
+		m["title"] = d.Title
+	}
+
+	if d.Detail != "" {
+		m["detail"] = d.Detail
+	}
+
+	if d.Instance != "" {
+		m["instance"] = d.Instance
+	}
 	if d.Type == "" {
 		m["type"] = "about:blank"
 	}
