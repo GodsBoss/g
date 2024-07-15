@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-type Details[Extension any] struct {
+type Details struct {
 	// Type is a URI reference that identifies the problem type. Defaults to "about:blank".
 	Type string
 
@@ -26,19 +26,22 @@ type Details[Extension any] struct {
 	// Populated when unmarshalling, ignored on marshalling.
 	InvalidMembers map[string]any
 
-	extension    *Extension
-	extensionErr error
+	// ExtensionMembers contains the extension members of this problem details instance.
+	//
+	// Populated with fields that are not defined by the problem detail RfC when unmarshalling.
+	//
+	// When marshalling, these fields and the members of the problem details instance are merged.
+	// Fields that would result in the same field names as those of the problem details are ignored,
+	// even if the corresponding fields contain zero values, e.g. even when Title is not set,
+	// an extension member "title" would not be marshalled.
+	ExtensionMembers map[string]any
 }
 
-func (d Details[_]) StatusText() string {
+func (d Details) StatusText() string {
 	return http.StatusText(d.Status)
 }
 
-func (d Details[Extension]) Extension() (*Extension, error) {
-	return d.extension, d.extensionErr
-}
-
-func (d Details[Extension]) MarshalJSON() ([]byte, error) {
+func (d Details) MarshalJSON() ([]byte, error) {
 	m := map[string]any{}
 	if d.Type != "" {
 		m["type"] = d.Type
@@ -66,7 +69,7 @@ func (d Details[Extension]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(m)
 }
 
-func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
+func (d *Details) UnmarshalJSON(data []byte) error {
 	var tmp map[string]any
 
 	if err := json.Unmarshal(data, &tmp); err != nil {
@@ -99,18 +102,9 @@ func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
 		delete(tmp, field)
 	}
 
-	d.extension, d.extensionErr = unmarshalExtension[Extension](tmp)
+	d.ExtensionMembers = tmp
 
 	return nil
-}
-
-func unmarshalExtension[Extension any](remainingFields map[string]any) (*Extension, error) {
-	jsonStringForExtension, _ := json.Marshal(remainingFields)
-	var extension Extension
-	if err := json.Unmarshal([]byte(jsonStringForExtension), &extension); err != nil {
-		return nil, err
-	}
-	return &extension, nil
 }
 
 var memberFields = []string{

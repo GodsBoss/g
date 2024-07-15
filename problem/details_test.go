@@ -11,29 +11,26 @@ import (
 )
 
 func TestUnmarshalJSON(t *testing.T) {
-	testcases := map[string]func(t *testing.T, details problem.Details[map[string]interface{}]){
-		"default_type": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+	testcases := map[string]func(t *testing.T, details problem.Details){
+		"default_type": func(t *testing.T, details problem.Details) {
 			if typ := details.Type; typ != "about:blank" {
 				t.Errorf("expected type '%s', got '%s'", "about:blank", typ)
 			}
 		},
-		"detail": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"detail": func(t *testing.T, details problem.Details) {
 			if detail := details.Detail; detail != "This API does not understand SOAP." {
 				t.Errorf("expected detail '%s', got '%s'", "This API does not understand SOAP.", detail)
 			}
 		},
-		"extension": func(t *testing.T, details problem.Details[map[string]interface{}]) {
-			extension, err := details.Extension()
-			if err != nil {
-				t.Errorf("expected no extension error, got %v", err)
-			}
+		"extension": func(t *testing.T, details problem.Details) {
+			extension := details.ExtensionMembers
 			if extension == nil {
 				t.Fatalf("expected non-nil extension")
 			}
-			if extensionType, ok := (*extension)["type"]; ok {
+			if extensionType, ok := extension["type"]; ok {
 				t.Errorf("expected no 'type' in extension, got %+v", extensionType)
 			}
-			errorList, ok := (*extension)["errors"].([]interface{})
+			errorList, ok := extension["errors"].([]interface{})
 			if !ok {
 				t.Error("expected 'errors' to contain array.")
 			}
@@ -41,13 +38,13 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected %d error list entries, got %+v", 3, errorList)
 			}
 		},
-		"instance": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"instance": func(t *testing.T, details problem.Details) {
 			instance := details.Instance
 			if instance != "https://api.example.org/problems/instances/666" {
 				t.Errorf("expected instance '%s', got '%s'", "https://api.example.org/problems/instances/666", instance)
 			}
 		},
-		"members_with_different_types": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"members_with_different_types": func(t *testing.T, details problem.Details) {
 			if typ := details.Type; typ != "about:blank" {
 				t.Errorf("expected type '%s', got '%s'", "about:blank", typ)
 			}
@@ -68,7 +65,7 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected 5 invalid members, got %+v", invalidMembers)
 			}
 		},
-		"status_400": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"status_400": func(t *testing.T, details problem.Details) {
 			if status := details.Status; status != 400 {
 				t.Errorf("expected status code %d, got %d", 400, status)
 			}
@@ -76,22 +73,22 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected status text '%s', got '%s'", expectedStatusText, actualStatusText)
 			}
 		},
-		"status_too_big": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"status_too_big": func(t *testing.T, details problem.Details) {
 			if status := details.Status; status != 0 {
 				t.Errorf("expected status code %d, got %d", 0, status)
 			}
 		},
-		"status_too_small": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"status_too_small": func(t *testing.T, details problem.Details) {
 			if status := details.Status; status != 0 {
 				t.Errorf("expected status code %d, got %d", 0, status)
 			}
 		},
-		"title": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"title": func(t *testing.T, details problem.Details) {
 			if title := details.Title; title != "JSON broken" {
 				t.Errorf("expected title '%s', got '%s'", "JSON broken", title)
 			}
 		},
-		"type": func(t *testing.T, details problem.Details[map[string]interface{}]) {
+		"type": func(t *testing.T, details problem.Details) {
 			typ := details.Type
 			if typ != "https://api.example.org/foo/bar/123" {
 				t.Errorf("expected type '%s', got '%s'", "https://api.example.org/foo/bar/123", typ)
@@ -111,7 +108,7 @@ func TestUnmarshalJSON(t *testing.T) {
 					t.Fatalf("could not read file %s: %v", filename, err)
 				}
 
-				var details problem.Details[map[string]interface{}]
+				var details problem.Details
 
 				if err := json.Unmarshal(data, &details); err != nil {
 					t.Fatalf("could not unmarshal payload: %v", err)
@@ -130,38 +127,16 @@ func TestUnmarshalMismatchingJSON(t *testing.T) {
 		t.Fatalf("could not read file '%s': %v", filename, err)
 	}
 
-	var details problem.Details[map[string]any]
+	var details problem.Details
 
 	if err := json.Unmarshal(data, &details); err == nil {
 		t.Error("expected an error")
 	}
 }
 
-func TestUnmarshalBrokenExtension(t *testing.T) {
-	filename := "testdata/broken_extension.json"
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		t.Fatalf("could not read file '%s': %v", filename, err)
-	}
-
-	var details problem.Details[map[string]string]
-
-	if err := json.Unmarshal(data, &details); err != nil {
-		t.Errorf("could not unmarshal problem details: %v", err)
-	}
-
-	extension, err := details.Extension()
-	if extension != nil {
-		t.Errorf("expected no extension, got %+v", *extension)
-	}
-	if err == nil {
-		t.Error("expected an extension error")
-	}
-}
-
 func TestMarshalJSON(t *testing.T) {
 	testcases := map[string]struct {
-		details problem.Details[map[string]interface{}]
+		details problem.Details
 		check   func(t *testing.T, value map[string]interface{})
 	}{
 		"empty": {
@@ -195,7 +170,7 @@ func TestMarshalJSON(t *testing.T) {
 			},
 		},
 		"fields_populated": {
-			details: problem.Details[map[string]interface{}]{
+			details: problem.Details{
 				Type:     "https://example.org/problems/not-enough-jquery",
 				Status:   400,
 				Title:    "Not enough jQuery",
