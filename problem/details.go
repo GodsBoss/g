@@ -37,6 +37,8 @@ type Details struct {
 	ExtensionMembers map[string]any
 }
 
+// StatusText returns the status text corresponding to the HTTP status code of this problem details.
+// Returns an empty string for unknown status codes.
 func (d Details) StatusText() string {
 	return http.StatusText(d.Status)
 }
