@@ -126,3 +126,25 @@ func TestUnmarshalMismatchingJSON(t *testing.T) {
 		t.Error("expected an error")
 	}
 }
+
+func TestUnmarshalBrokenExtension(t *testing.T) {
+	filename := "testdata/broken_extension.json"
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		t.Fatalf("could not read file '%s': %v", filename, err)
+	}
+
+	var details problem.Details[map[string]string]
+
+	if err := json.Unmarshal(data, &details); err != nil {
+		t.Errorf("could not unmarshal problem details: %v", err)
+	}
+
+	extension, err := details.Extension()
+	if extension != nil {
+		t.Errorf("expected no extension, got %+v", *extension)
+	}
+	if err == nil {
+		t.Error("expected an extension error")
+	}
+}
