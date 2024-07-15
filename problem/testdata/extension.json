@@ -1,0 +1,8 @@
+{
+    "type": "tag:example@example.org,2021-09-17:OutOfLuck",
+    "errors": [
+        "not so much luck",
+        "very few luck",
+        "no luck"
+    ]
+}

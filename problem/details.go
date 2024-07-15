@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-type Details struct {
+type Details[Extension any] struct {
 	// Type is a URI reference that identifies the problem type. Defaults to "about:blank".
 	Type string
 
@@ -24,20 +24,27 @@ type Details struct {
 
 	// invalidMembers stores members that contained unexpected types on unmarshalling.
 	invalidMembers map[string]any
+
+	extension    *Extension
+	extensionErr error
 }
 
-func (d Details) StatusText() string {
+func (d Details[_]) StatusText() string {
 	return http.StatusText(d.Status)
 }
 
 // InvalidMembers returns members that match the defined members of the problem details RFC, but contained values
 // with different types than expected, e.g. a "status" with type boolean or an "instance" with type object.
 // Clients must not change the return value of this method.
-func (d Details) InvalidMembers() map[string]any {
+func (d Details[_]) InvalidMembers() map[string]any {
 	return d.invalidMembers
 }
 
-func (d *Details) UnmarshalJSON(data []byte) error {
+func (d Details[Extension]) Extension() (*Extension, error) {
+	return d.extension, d.extensionErr
+}
+
+func (d *Details[Extension]) UnmarshalJSON(data []byte) error {
 	var tmp map[string]any
 
 	if err := json.Unmarshal(data, &tmp); err != nil {
@@ -63,7 +70,30 @@ func (d *Details) UnmarshalJSON(data []byte) error {
 
 	d.invalidMembers = invalidMembers
 
+	for _, field := range memberFields {
+		delete(tmp, field)
+	}
+
+	d.extension, d.extensionErr = unmarshalExtension[Extension](tmp)
+
 	return nil
+}
+
+func unmarshalExtension[Extension any](remainingFields map[string]any) (*Extension, error) {
+	jsonStringForExtension, _ := json.Marshal(remainingFields)
+	var extension Extension
+	if err := json.Unmarshal([]byte(jsonStringForExtension), &extension); err != nil {
+		return nil, err
+	}
+	return &extension, nil
+}
+
+var memberFields = []string{
+	"detail",
+	"instance",
+	"status",
+	"title",
+	"type",
 }
 
 func toType[T any](generic map[string]any, name string, otherwiseTarget map[string]any) (typed T) {
