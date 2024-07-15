@@ -20,6 +20,11 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected status text '%s', got '%s'", expectedStatusText, actualStatusText)
 			}
 		},
+		"title": func(t *testing.T, details problem.Details) {
+			if title := details.Title; title != "JSON broken" {
+				t.Errorf("expected title '%s', got '%s'", "JSON broken", title)
+			}
+		},
 	}
 
 	for name := range testcases {
