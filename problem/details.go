@@ -14,6 +14,9 @@ type Details struct {
 
 	// Detail is a human-readable explanation specific to this occurence of the problem.
 	Detail string
+
+	// Instance is a URI reference that identifies the specific occurence of the problem. Optional.
+	Instance string
 }
 
 func (d Details) StatusText() string {

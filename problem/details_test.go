@@ -36,6 +36,12 @@ func TestUnmarshalJSON(t *testing.T) {
 				t.Errorf("expected type '%s', got '%s'", "https://api.example.org/foo/bar/123", typ)
 			}
 		},
+		"instance": func(t *testing.T, details problem.Details) {
+			instance := details.Instance
+			if instance != "https://api.example.org/problems/instances/666" {
+				t.Errorf("expected instance '%s', got '%s'", "https://api.example.org/problems/instances/666", instance)
+			}
+		},
 	}
 
 	for name := range testcases {
