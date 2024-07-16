@@ -38,6 +38,15 @@ type Details struct {
 	ExtensionMembers map[string]any
 }
 
+// GetType returns the details problem's type or "about:blank" if the type is empty.
+func (d Details) GetType() string {
+	if d.Type == "" {
+		return "about:blank"
+	}
+
+	return d.Type
+}
+
 // StatusText returns the status text corresponding to the HTTP status code of this problem details.
 // Returns an empty string for unknown status codes.
 func (d Details) StatusText() string {
