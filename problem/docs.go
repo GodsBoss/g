@@ -8,6 +8,6 @@
 //
 // Currently, only JSON is supported. XML support may be added in the future.
 //
-// Both "type" and "instance" are defined to be URIs. Checking their correctness,
-// i.e. that they really are URIs, is not done by this package.
+// This package does not enforce "type" and "instance" to be URIs, although
+// they are defined as such.
 package problem
