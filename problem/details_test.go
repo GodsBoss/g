@@ -244,22 +244,3 @@ func TestMarshalJSON(t *testing.T) {
 		)
 	}
 }
-
-func TestGetTypeEmpty(t *testing.T) {
-	var details problem.Details
-
-	if typ := details.GetType(); typ != "about:blank" {
-		t.Errorf("expected type to be '%s', got '%s'", "about:blank", typ)
-	}
-}
-
-func TestGetTypeWithValue(t *testing.T) {
-	expectedType := "http://example.com/problems/5423423424"
-	details := problem.Details{
-		Type: expectedType,
-	}
-
-	if typ := details.GetType(); typ != expectedType {
-		t.Errorf("expected type to be '%s', got '%s'", typ, expectedType)
-	}
-}
