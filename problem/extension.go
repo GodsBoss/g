@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// GetExtension attempts to create an instance of Extension that is populated with
+// the fields from the details extension.
 func GetExtension[Extension any](details Details) (*Extension, error) {
 	extensionMembers := details.ExtensionMembers
 	if extensionMembers == nil {
@@ -24,6 +26,9 @@ func GetExtension[Extension any](details Details) (*Extension, error) {
 	return &extension, nil
 }
 
+// SetExtension sets the extension members of details to the equivalent of the JSON representation of extension.
+//
+// Returns an error if extension cannot be marshalled into a JSON object.
 func SetExtension(details *Details, extension any) error {
 	data, err := json.Marshal(extension)
 	if err != nil {

@@ -6,11 +6,12 @@ import (
 	"net/http"
 )
 
+// Details represents a problem details object that can be marshalled to and unmarshalled from JSON.
 type Details struct {
 	// Type is a URI reference that identifies the problem type. Defaults to "about:blank".
 	Type string
 
-	// Status is the HTTP status code. May be 0.
+	// Status is the HTTP status code.
 	Status int
 
 	// Title is a human-readable summary of the problem type.
@@ -19,7 +20,7 @@ type Details struct {
 	// Detail is a human-readable explanation specific to this occurence of the problem.
 	Detail string
 
-	// Instance is a URI reference that identifies the specific occurence of the problem. Optional.
+	// Instance is a URI reference that identifies the specific occurence of the problem.
 	Instance string
 
 	// InvalidMembers contains fields that matched the problem details member names, but not their types.
@@ -43,6 +44,8 @@ func (d Details) StatusText() string {
 	return http.StatusText(d.Status)
 }
 
+// MarshalJSON marshals this Details object into a JSON representation. See [Details.ExtensionMembers] for
+// handling of extension members.
 func (d Details) MarshalJSON() ([]byte, error) {
 	m := map[string]any{}
 
@@ -75,6 +78,13 @@ func addNonZero[T comparable](m map[string]any, key string, value T) {
 	}
 }
 
+// UnmarshalJSON is very lenient. As long as the JSON data is an object, it can be unmarshalled into
+// a problem details object. All members defined by RFC 9457 are optional.
+//
+// See [Details.InvalidMembers] for handling of members that share a name with the pre-defined members,
+// but have a value with an incompatible type.
+//
+// See [Details.ExtensionMembers] for extension members.
 func (d *Details) UnmarshalJSON(data []byte) error {
 	var tmp map[string]any
 
