@@ -23,3 +23,19 @@ func GetExtension[Extension any](details Details) (*Extension, error) {
 
 	return &extension, nil
 }
+
+func SetExtension(details *Details, extension any) error {
+	data, err := json.Marshal(extension)
+	if err != nil {
+		return fmt.Errorf("could not marshal extension: %w", err)
+	}
+
+	var extensionMembers map[string]any
+	if err := json.Unmarshal(data, &extensionMembers); err != nil {
+		return fmt.Errorf("could not unmarshal marshalled extension into map: %w", err)
+	}
+
+	details.ExtensionMembers = extensionMembers
+
+	return nil
+}

@@ -35,6 +35,22 @@ func TestGetExtensionFailsDueToBrokenTarget(t *testing.T) {
 	}
 }
 
+func TestSetExtensionFailsDueToUnmarshallableExtension(t *testing.T) {
+	details := problem.Details{}
+	err := problem.SetExtension(&details, jsonKiller{})
+	if err == nil {
+		t.Errorf("expected an error")
+	}
+}
+
+func TestSetExtensionFailsDueToExtensionThatDoesNotMarshalIntoMap(t *testing.T) {
+	details := problem.Details{}
+	err := problem.SetExtension(&details, true)
+	if err == nil {
+		t.Errorf("expected an error")
+	}
+}
+
 type jsonKiller struct{}
 
 func (jsonKiller) MarshalJSON() ([]byte, error) {
