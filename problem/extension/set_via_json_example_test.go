@@ -1,13 +1,14 @@
-package problem_test
+package extension_test
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/GodsBoss/g/problem"
+	"github.com/GodsBoss/g/problem/extension"
 )
 
-func ExampleSetExtension() {
+func ExampleSetViaJSON() {
 	details := problem.Details{
 		Type:     "https://example.com/probs/out-of-credit",
 		Title:    "You do not have enough credit.",
@@ -28,7 +29,7 @@ func ExampleSetExtension() {
 		},
 	}
 
-	if err := problem.SetExtension(&details, extra); err != nil {
+	if err := extension.SetViaJSON(&details, extra); err != nil {
 		panic(err)
 	}
 

@@ -1,10 +1,11 @@
-package problem_test
+package extension_test
 
 import (
 	"errors"
 	"testing"
 
 	"github.com/GodsBoss/g/problem"
+	"github.com/GodsBoss/g/problem/extension"
 )
 
 func TestGetExtensionFailsDueToBrokenExtensionMembers(t *testing.T) {
@@ -14,7 +15,7 @@ func TestGetExtensionFailsDueToBrokenExtensionMembers(t *testing.T) {
 		},
 	}
 
-	extension, err := problem.GetExtension[map[string]any](details)
+	extension, err := extension.GetViaJSON[map[string]any](details)
 	if extension != nil {
 		t.Errorf("expected no extension, got %+v", extension)
 	}
@@ -26,7 +27,7 @@ func TestGetExtensionFailsDueToBrokenExtensionMembers(t *testing.T) {
 func TestGetExtensionFailsDueToBrokenTarget(t *testing.T) {
 	details := problem.Details{}
 
-	extension, err := problem.GetExtension[jsonKiller](details)
+	extension, err := extension.GetViaJSON[jsonKiller](details)
 	if extension != nil {
 		t.Errorf("expected no extension, got %+v", extension)
 	}
@@ -37,7 +38,7 @@ func TestGetExtensionFailsDueToBrokenTarget(t *testing.T) {
 
 func TestSetExtensionFailsDueToUnmarshallableExtension(t *testing.T) {
 	details := problem.Details{}
-	err := problem.SetExtension(&details, jsonKiller{})
+	err := extension.SetViaJSON(&details, jsonKiller{})
 	if err == nil {
 		t.Errorf("expected an error")
 	}
@@ -45,7 +46,7 @@ func TestSetExtensionFailsDueToUnmarshallableExtension(t *testing.T) {
 
 func TestSetExtensionFailsDueToExtensionThatDoesNotMarshalIntoMap(t *testing.T) {
 	details := problem.Details{}
-	err := problem.SetExtension(&details, true)
+	err := extension.SetViaJSON(&details, true)
 	if err == nil {
 		t.Errorf("expected an error")
 	}

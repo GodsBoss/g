@@ -1,13 +1,14 @@
-package problem_test
+package extension_test
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/GodsBoss/g/problem"
+	"github.com/GodsBoss/g/problem/extension"
 )
 
-func ExampleGetExtension() {
+func ExampleGetViaJSON() {
 	type Extra struct {
 		Balance  int
 		Accounts []string
@@ -29,7 +30,7 @@ func ExampleGetExtension() {
 		panic(err)
 	}
 
-	extra, err := problem.GetExtension[Extra](problemDetails)
+	extra, err := extension.GetViaJSON[Extra](problemDetails)
 	if err != nil {
 		panic(err)
 	}

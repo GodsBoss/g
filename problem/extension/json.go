@@ -1,13 +1,18 @@
-package problem
+// Package extension contains helpers for mapping extension fields as provided by problem details
+// to and from concrete types.
+package extension
 
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/GodsBoss/g/problem"
 )
 
-// GetExtension attempts to create an instance of Extension that is populated with
-// the fields from the details extension.
-func GetExtension[Extension any](details Details) (*Extension, error) {
+// GetViaJSON attempts to create an instance of Extension that is populated with
+// the fields from the details extension by converting the details extension fields
+// into a JSON representatino which is then unmarshalled into an instance of Extension.
+func GetViaJSON[Extension any](details problem.Details) (*Extension, error) {
 	extensionMembers := details.ExtensionMembers
 	if extensionMembers == nil {
 		extensionMembers = make(map[string]any)
@@ -26,10 +31,9 @@ func GetExtension[Extension any](details Details) (*Extension, error) {
 	return &extension, nil
 }
 
-// SetExtension sets the extension members of details to the equivalent of the JSON representation of extension.
-//
-// Returns an error if extension cannot be marshalled into a JSON object.
-func SetExtension(details *Details, extension any) error {
+// SetViaJSON populates the details extension fields by creating an intermediate JSON object representation
+// of the given extension.
+func SetViaJSON(details *problem.Details, extension any) error {
 	data, err := json.Marshal(extension)
 	if err != nil {
 		return fmt.Errorf("could not marshal extension: %w", err)
