@@ -23,3 +23,20 @@ func ExampleWithoutValues() {
 	// Paul
 	// Mary
 }
+
+func ExampleWithoutKeys() {
+	ages := map[string]int{
+		"Peter": 33,
+		"Paul":  22,
+		"Mary":  27,
+	}
+
+	for name := range seq.WithoutKeys(maps.All(ages)) {
+		fmt.Println(name)
+	}
+
+	// Unordered output:
+	// 33
+	// 22
+	// 27
+}
