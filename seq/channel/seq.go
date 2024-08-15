@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+// ToSequence takes a channel and returns an iterator pulling values from the channel and yielding them.
 func ToSequence[Value any](values <-chan Value) iter.Seq[Value] {
 	return func(yield func(value Value) bool) {
 		for valueFromChannel := range values {
