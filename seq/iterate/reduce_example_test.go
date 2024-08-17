@@ -8,14 +8,14 @@ import (
 )
 
 func ExampleReduce() {
-	add := func(n int, m int) int {
-		return m + n
+	addStringLength := func(current int, next string) int {
+		return current + len(next)
 	}
 
-	sum := iterate.Reduce(0, add)
+	stringLengthSum := iterate.Reduce(0, addStringLength)
 
-	fmt.Println(sum(slices.Values([]int{2, 3, 5, 7})))
+	fmt.Println(stringLengthSum(slices.Values([]string{"foo", "bar", "foobar"})))
 
 	// Output:
-	// 17
+	// 12
 }
