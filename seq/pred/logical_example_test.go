@@ -2,28 +2,20 @@ package pred_test
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/GodsBoss/g/seq"
 	"github.com/GodsBoss/g/seq/pred"
 )
 
 func ExampleNot() {
-	numbers := func(maximum int) func(yield func(int) bool) {
-		current := 0
-
-		return func(yield func(int) bool) {
-			for current < maximum {
-				yield(current)
-				current++
-			}
-		}
-	}
+	numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
 	isEven := func(n int) bool {
 		return n%2 == 0
 	}
 
-	for n := range seq.Filter(numbers(10), pred.Not(isEven)) {
+	for n := range seq.Filter(slices.Values(numbers), pred.Not(isEven)) {
 		fmt.Println(n)
 	}
 
@@ -36,16 +28,7 @@ func ExampleNot() {
 }
 
 func ExampleAllOf() {
-	numbers := func(maximum int) func(yield func(int) bool) {
-		current := 0
-
-		return func(yield func(int) bool) {
-			for current < maximum {
-				yield(current)
-				current++
-			}
-		}
-	}
+	numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 
 	isDivisibleBy := func(divisor int) func(int) bool {
 		return func(n int) bool {
@@ -53,27 +36,17 @@ func ExampleAllOf() {
 		}
 	}
 
-	for n := range seq.Filter(numbers(13), pred.AllOf(isDivisibleBy(2), isDivisibleBy(3))) {
+	for n := range seq.Filter(slices.Values(numbers), pred.AllOf(isDivisibleBy(2), isDivisibleBy(3))) {
 		fmt.Println(n)
 	}
 
 	// Output:
-	// 0
 	// 6
 	// 12
 }
 
 func ExampleAnyOf() {
-	numbers := func(maximum int) func(yield func(int) bool) {
-		current := 0
-
-		return func(yield func(int) bool) {
-			for current < maximum {
-				yield(current)
-				current++
-			}
-		}
-	}
+	numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 	isDivisibleBy := func(divisor int) func(int) bool {
 		return func(n int) bool {
@@ -81,12 +54,11 @@ func ExampleAnyOf() {
 		}
 	}
 
-	for n := range seq.Filter(numbers(10), pred.AnyOf(isDivisibleBy(2), isDivisibleBy(3))) {
+	for n := range seq.Filter(slices.Values(numbers), pred.AnyOf(isDivisibleBy(2), isDivisibleBy(3))) {
 		fmt.Println(n)
 	}
 
 	// Output:
-	// 0
 	// 2
 	// 3
 	// 4
