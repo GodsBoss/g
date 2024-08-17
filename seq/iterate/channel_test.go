@@ -1,9 +1,9 @@
-package channel_test
+package iterate_test
 
 import (
 	"testing"
 
-	"github.com/GodsBoss/g/seq/channel"
+	"github.com/GodsBoss/g/seq/iterate"
 )
 
 func TestToSequenceLeavesItemsInChannel(t *testing.T) {
@@ -15,7 +15,7 @@ func TestToSequenceLeavesItemsInChannel(t *testing.T) {
 	ch <- "fourth"
 	ch <- "fifth"
 
-	for value := range channel.ToSequence(ch) {
+	for value := range iterate.FromChannel(ch) {
 		if value == "third" {
 			break
 		}

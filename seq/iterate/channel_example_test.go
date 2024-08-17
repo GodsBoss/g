@@ -1,10 +1,9 @@
-package channel_test
+package iterate_test
 
 import (
 	"fmt"
 	"slices"
 
-	"github.com/GodsBoss/g/seq/channel"
 	"github.com/GodsBoss/g/seq/iterate"
 )
 
@@ -15,7 +14,7 @@ func ExampleToSequence() {
 	ch <- "Sparta!"
 	close(ch)
 
-	for line := range channel.ToSequence(ch) {
+	for line := range iterate.FromChannel(ch) {
 		fmt.Println(line)
 	}
 
@@ -26,7 +25,7 @@ func ExampleToSequence() {
 }
 
 func ExampleFromSequence_exhaustion() {
-	ch, cancel := channel.FromSequence(iterate.WithoutKeys(slices.All([]string{"This", "is", "Sparta!"})))
+	ch, cancel := iterate.IntoChannel(iterate.WithoutKeys(slices.All([]string{"This", "is", "Sparta!"})))
 	defer cancel()
 
 	for line := range ch {
@@ -47,7 +46,7 @@ func ExampleFromSequence_cancel() {
 		}
 	}
 
-	ch, cancel := channel.FromSequence(numbers)
+	ch, cancel := iterate.IntoChannel(numbers)
 
 	for n := range ch {
 		if n < 5 {
