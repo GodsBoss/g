@@ -1,2 +1,2 @@
-// Package iterate provides functions around iter.Seq. For iter.Seq2 see iterate2 package.
+// Package iterate contains constructors for iter.Seq iterators. For iter.Seq2 iterators see iterate2 package.
 package iterate
