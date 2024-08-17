@@ -1,17 +1,17 @@
-package seq_test
+package iterate2_test
 
 import (
 	"fmt"
 	"slices"
 
-	"github.com/GodsBoss/g/seq"
+	"github.com/GodsBoss/g/seq/iterate2"
 )
 
 func ExampleZip() {
 	givenNames := []string{"Peter", "Paul", "Mary"}
 	familyNames := []string{"Smith", "Miller", "Doe"}
 
-	zipped := seq.Zip(
+	zipped := iterate2.Zip(
 		slices.Values(givenNames),
 		slices.Values(familyNames),
 	)
