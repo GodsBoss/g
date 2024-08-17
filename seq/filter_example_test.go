@@ -13,7 +13,7 @@ func ExampleFilter() {
 		return n%2 == 1
 	}
 
-	for n := range seq.Filter(slices.Values(numbers), isOdd) {
+	for n := range seq.Filter(isOdd)(slices.Values(numbers)) {
 		fmt.Println(n)
 	}
 

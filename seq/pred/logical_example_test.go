@@ -15,7 +15,7 @@ func ExampleNot() {
 		return n%2 == 0
 	}
 
-	for n := range seq.Filter(slices.Values(numbers), pred.Not(isEven)) {
+	for n := range seq.Filter(pred.Not(isEven))(slices.Values(numbers)) {
 		fmt.Println(n)
 	}
 
@@ -36,7 +36,7 @@ func ExampleAllOf() {
 		}
 	}
 
-	for n := range seq.Filter(slices.Values(numbers), pred.AllOf(isDivisibleBy(2), isDivisibleBy(3))) {
+	for n := range seq.Filter(pred.AllOf(isDivisibleBy(2), isDivisibleBy(3)))(slices.Values(numbers)) {
 		fmt.Println(n)
 	}
 
@@ -54,7 +54,7 @@ func ExampleAnyOf() {
 		}
 	}
 
-	for n := range seq.Filter(slices.Values(numbers), pred.AnyOf(isDivisibleBy(2), isDivisibleBy(3))) {
+	for n := range seq.Filter(pred.AnyOf(isDivisibleBy(2), isDivisibleBy(3)))(slices.Values(numbers)) {
 		fmt.Println(n)
 	}
 
