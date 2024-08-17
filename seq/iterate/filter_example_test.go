@@ -1,10 +1,10 @@
-package seq_test
+package iterate_test
 
 import (
 	"fmt"
 	"slices"
 
-	"github.com/GodsBoss/g/seq"
+	"github.com/GodsBoss/g/seq/iterate"
 )
 
 func ExampleFilter() {
@@ -13,7 +13,7 @@ func ExampleFilter() {
 		return n%2 == 1
 	}
 
-	for n := range seq.Filter(isOdd)(slices.Values(numbers)) {
+	for n := range iterate.Filter(isOdd)(slices.Values(numbers)) {
 		fmt.Println(n)
 	}
 
