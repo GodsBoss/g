@@ -12,8 +12,8 @@ func ExampleZip() {
 	familyNames := []string{"Smith", "Miller", "Doe"}
 
 	zipped := seq.Zip(
-		seq.WithoutKeys(slices.All(givenNames)),
-		seq.WithoutKeys(slices.All(familyNames)),
+		slices.Values(givenNames),
+		slices.Values(familyNames),
 	)
 
 	for givenName, familyName := range zipped {
