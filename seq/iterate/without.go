@@ -2,23 +2,23 @@ package iterate
 
 import "iter"
 
-// WithoutValues takes a sequence of key/value pairs and returns a sequence of keys.
-func WithoutValues[Key, Value any](sequence iter.Seq2[Key, Value]) iter.Seq[Key] {
-	return func(yield func(key Key) bool) {
+// OverFirst creates a sequence of only the first values from a two-valued sequence.
+func OverFirst[First, Second any](sequence iter.Seq2[First, Second]) iter.Seq[First] {
+	return func(yield func(first First) bool) {
 		sequence(
-			func(key Key, _ Value) bool {
-				return yield(key)
+			func(first First, _ Second) bool {
+				return yield(first)
 			},
 		)
 	}
 }
 
-// WithoutValues takes a sequence of key/value pairs and returns a sequence of values.
-func WithoutKeys[Key, Value any](sequence iter.Seq2[Key, Value]) iter.Seq[Value] {
-	return func(yield func(value Value) bool) {
+// OverSecond creates a sequence of only the second values from a two-valued sequence.
+func OverSecond[First, Second any](sequence iter.Seq2[First, Second]) iter.Seq[Second] {
+	return func(yield func(second Second) bool) {
 		sequence(
-			func(_ Key, value Value) bool {
-				return yield(value)
+			func(_ First, second Second) bool {
+				return yield(second)
 			},
 		)
 	}

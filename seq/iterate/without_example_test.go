@@ -7,14 +7,14 @@ import (
 	"github.com/GodsBoss/g/seq/iterate"
 )
 
-func ExampleWithoutValues() {
+func ExampleOverFirst() {
 	ages := map[string]int{
 		"Peter": 33,
 		"Paul":  22,
 		"Mary":  27,
 	}
 
-	for name := range iterate.WithoutValues(maps.All(ages)) {
+	for name := range iterate.OverFirst(maps.All(ages)) {
 		fmt.Println(name)
 	}
 
@@ -24,14 +24,14 @@ func ExampleWithoutValues() {
 	// Mary
 }
 
-func ExampleWithoutKeys() {
+func ExampleOverSecond() {
 	ages := map[string]int{
 		"Peter": 33,
 		"Paul":  22,
 		"Mary":  27,
 	}
 
-	for name := range iterate.WithoutKeys(maps.All(ages)) {
+	for name := range iterate.OverSecond(maps.All(ages)) {
 		fmt.Println(name)
 	}
 
