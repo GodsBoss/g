@@ -2,13 +2,12 @@ package iterate2
 
 import "iter"
 
-// SwapKeyValues takes a sequence of key/value pairs and returns a sequence of key/value pairs
-// with keys and values being switched in their positions.
-func SwapKeyValues[Key, Value any](sequence iter.Seq2[Key, Value]) iter.Seq2[Value, Key] {
-	return func(yield func(value Value, key Key) bool) {
+// Swap takes a iter.Seq2 and returns a new iter.Seq2 with first and second values swapped.
+func Swap[First, Second any](sequence iter.Seq2[First, Second]) iter.Seq2[Second, First] {
+	return func(yield func(second Second, first First) bool) {
 		sequence(
-			func(key Key, value Value) bool {
-				return yield(value, key)
+			func(first First, second Second) bool {
+				return yield(second, first)
 			},
 		)
 	}

@@ -7,14 +7,14 @@ import (
 	"github.com/GodsBoss/g/seq/iterate2"
 )
 
-func ExampleSwapKeyValues() {
+func ExampleSwap() {
 	ages := map[string]int{
 		"Peter": 33,
 		"Paul":  22,
 		"Mary":  27,
 	}
 
-	for age, name := range iterate2.SwapKeyValues(maps.All(ages)) {
+	for age, name := range iterate2.Swap(maps.All(ages)) {
 		fmt.Printf("%s is %d years old.\n", name, age)
 	}
 
