@@ -25,7 +25,7 @@ func ExampleToSequence() {
 }
 
 func ExampleFromSequence_exhaustion() {
-	ch, cancel := iterate.IntoChannel(iterate.WithoutKeys(slices.All([]string{"This", "is", "Sparta!"})))
+	ch, cancel := iterate.IntoChannel(slices.Values([]string{"This", "is", "Sparta!"}))
 	defer cancel()
 
 	for line := range ch {
