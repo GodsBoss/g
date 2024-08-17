@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/GodsBoss/g/seq"
 	"github.com/GodsBoss/g/seq/channel"
+	"github.com/GodsBoss/g/seq/iterate"
 )
 
 func ExampleToSequence() {
@@ -26,7 +26,7 @@ func ExampleToSequence() {
 }
 
 func ExampleFromSequence_exhaustion() {
-	ch, cancel := channel.FromSequence(seq.WithoutKeys(slices.All([]string{"This", "is", "Sparta!"})))
+	ch, cancel := channel.FromSequence(iterate.WithoutKeys(slices.All([]string{"This", "is", "Sparta!"})))
 	defer cancel()
 
 	for line := range ch {
