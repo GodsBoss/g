@@ -1,4 +1,4 @@
-package seq
+package iterate
 
 import "iter"
 

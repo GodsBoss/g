@@ -1,9 +1,9 @@
-package seq_test
+package iterate_test
 
 import (
 	"fmt"
 
-	"github.com/GodsBoss/g/seq"
+	"github.com/GodsBoss/g/seq/iterate"
 )
 
 func ExampleWhile() {
@@ -20,7 +20,7 @@ func ExampleWhile() {
 		}
 	}
 
-	for n := range seq.While(lessThan(5))(numbers) {
+	for n := range iterate.While(lessThan(5))(numbers) {
 		fmt.Println(n)
 	}
 

@@ -6,7 +6,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/GodsBoss/g/seq"
+	"github.com/GodsBoss/g/seq/iterate"
 	"github.com/GodsBoss/g/seq/pred"
 )
 
@@ -22,7 +22,7 @@ func ExampleContextIsValid() {
 
 	items := []int{2, 3, 5, 7, 11, 13, 17, 19}
 
-	for n := range seq.While(pred.ContextIsValid[int](ctx))(slices.Values(items)) {
+	for n := range iterate.While(pred.ContextIsValid[int](ctx))(slices.Values(items)) {
 		fmt.Println(n)
 		time.Sleep(time.Millisecond * 15)
 	}
@@ -45,7 +45,7 @@ func ExampleUntilCanceled() {
 		cancel()
 	}()
 
-	for n := range seq.While(untilCanceled)(slices.Values(items)) {
+	for n := range iterate.While(untilCanceled)(slices.Values(items)) {
 		fmt.Println(n)
 		time.Sleep(time.Millisecond * 15)
 	}
