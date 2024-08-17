@@ -1,2 +1,2 @@
-// Package pred contains predicates that support in using seq functionality that needs them.
+// Package pred contains predicates for iterate's Filter() and While() iterators.
 package pred
