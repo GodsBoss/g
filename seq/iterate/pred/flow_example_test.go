@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/GodsBoss/g/seq/iterate"
-	"github.com/GodsBoss/g/seq/pred"
+	"github.com/GodsBoss/g/seq/iterate/pred"
 )
 
 func ExampleContextIsValid() {
