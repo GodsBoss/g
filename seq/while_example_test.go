@@ -20,7 +20,7 @@ func ExampleWhile() {
 		}
 	}
 
-	for n := range seq.While(numbers, lessThan(5)) {
+	for n := range seq.While(lessThan(5))(numbers) {
 		fmt.Println(n)
 	}
 
