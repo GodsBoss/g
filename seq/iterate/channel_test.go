@@ -7,6 +7,8 @@ import (
 )
 
 func TestToSequenceLeavesItemsInChannel(t *testing.T) {
+	t.Parallel()
+
 	ch := make(chan string, 5)
 
 	ch <- "first"

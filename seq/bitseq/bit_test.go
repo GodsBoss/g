@@ -9,6 +9,8 @@ import (
 )
 
 func TestAndInt8(t *testing.T) {
+	t.Parallel()
+
 	testcases := map[string]testcase{
 		"AND int8 default": bitTestcase[int8]{
 			reduce:   bitseq.And[int8],
@@ -65,6 +67,8 @@ type bitTestcase[T bitseq.Integer] struct {
 }
 
 func (tc bitTestcase[T]) run(t *testing.T) {
+	t.Parallel()
+
 	actual := tc.reduce(slices.Values(tc.inputs))
 
 	if actual != tc.expected {

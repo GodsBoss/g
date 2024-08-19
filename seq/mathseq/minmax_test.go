@@ -8,6 +8,8 @@ import (
 )
 
 func TestMinWithoutValues(t *testing.T) {
+	t.Parallel()
+
 	_, ok := mathseq.Min(slices.Values(make([]float64, 0)))
 
 	if ok {
@@ -16,6 +18,8 @@ func TestMinWithoutValues(t *testing.T) {
 }
 
 func TestMaxWithoutValues(t *testing.T) {
+	t.Parallel()
+
 	_, ok := mathseq.Max(slices.Values(make([]float64, 0)))
 
 	if ok {

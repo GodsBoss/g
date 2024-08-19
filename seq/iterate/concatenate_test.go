@@ -8,6 +8,8 @@ import (
 )
 
 func TestConcatenatingInfiniteSequence(t *testing.T) {
+	t.Parallel()
+
 	numbers := func(yield func(n int) bool) {
 		n := 1
 		for yield(n) {

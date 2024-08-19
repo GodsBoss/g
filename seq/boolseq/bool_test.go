@@ -9,6 +9,8 @@ import (
 )
 
 func TestBool(t *testing.T) {
+	t.Parallel()
+
 	testcases := map[string]struct {
 		values []bool
 
@@ -42,6 +44,8 @@ func TestBool(t *testing.T) {
 		t.Run(
 			name,
 			func(t *testing.T) {
+				t.Parallel()
+
 				actual := testcase.f(slices.Values(testcase.values))
 
 				if actual != testcase.expected {

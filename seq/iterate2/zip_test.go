@@ -7,6 +7,8 @@ import (
 )
 
 func TestZipCanBeStopped(t *testing.T) {
+	t.Parallel()
+
 	numbers := func(yield func(int) bool) {
 		n := 1
 		for yield(n) {
