@@ -40,7 +40,7 @@ func TestThrottleIteration(t *testing.T) {
 	}
 
 	go func() {
-		for _ = range throttle.Iteration[struct{}](s)(seq) {
+		for range throttle.Iteration[struct{}](s)(seq) {
 			select {
 			case <-stopSeq:
 				return
@@ -92,7 +92,7 @@ func TestThrottleIteration2(t *testing.T) {
 	}
 
 	go func() {
-		for _ = range throttle.Iteration2[struct{}, struct{}](s)(seq) {
+		for range throttle.Iteration2[struct{}, struct{}](s)(seq) {
 			select {
 			case <-stopSeq:
 				return

@@ -74,7 +74,7 @@ func TestIterationsPerInterval(t *testing.T) {
 
 		iterator = throttle.Iteration[struct{}](strategy)(iterator)
 
-		for _ = range iterator {
+		for range iterator {
 			iterations++
 		}
 	}()

@@ -13,7 +13,7 @@ func TestRepeatDoesNotCallWrappedIteratorOnZeroCount(t *testing.T) {
 		called = true
 	}
 
-	for _ = range iterate2.Repeat[struct{}, struct{}](iterate2.Never, iterate2.IsReusable)(iterator) {
+	for range iterate2.Repeat[struct{}, struct{}](iterate2.Never, iterate2.IsReusable)(iterator) {
 	}
 
 	if called {
@@ -24,6 +24,6 @@ func TestRepeatDoesNotCallWrappedIteratorOnZeroCount(t *testing.T) {
 func TestRepeatDoesNotRepeatEmptyIterators(t *testing.T) {
 	iterator := func(yield func(first struct{}, second struct{}) bool) {}
 
-	for _ = range iterate2.Repeat[struct{}, struct{}](iterate2.InfiniteTimes, iterate2.IsReusable)(iterator) {
+	for range iterate2.Repeat[struct{}, struct{}](iterate2.InfiniteTimes, iterate2.IsReusable)(iterator) {
 	}
 }
