@@ -1,3 +1,4 @@
+// Package boolseq contains helpers for sequences of booleans.
 package boolseq
 
 import "iter"
