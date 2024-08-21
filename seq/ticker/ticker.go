@@ -1,3 +1,4 @@
+// Package ticker provides a sequence based on ticks.
 package ticker
 
 import (
