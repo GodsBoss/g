@@ -81,11 +81,13 @@ func Repeat[Value any](count int, reusable bool) func(iter.Seq[Value]) iter.Seq[
 	}
 }
 
+// Useful count constants to use with Repeat.
 const (
 	Never         = 0
 	InfiniteTimes = -1
 )
 
+// Determine whether a sequence is reusable when calling Repeat.
 const (
 	IsReusable    = true
 	IsNotReusable = false

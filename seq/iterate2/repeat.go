@@ -83,11 +83,13 @@ func Repeat[First any, Second any](count int, reusable bool) func(iter.Seq2[Firs
 	}
 }
 
+// Useful count constants to use with Repeat.
 const (
 	Never         = 0
 	InfiniteTimes = -1
 )
 
+// Determine whether a sequence is reusable when calling Repeat.
 const (
 	IsReusable    = true
 	IsNotReusable = false
