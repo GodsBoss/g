@@ -1,3 +1,4 @@
+// Package bitseq applies bitwise operations to sequences of integers.
 package bitseq
 
 import (
