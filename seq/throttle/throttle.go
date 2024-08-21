@@ -1,3 +1,4 @@
+// Package throttle allows for throttling iterators.
 package throttle
 
 import (
