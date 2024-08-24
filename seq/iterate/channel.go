@@ -9,6 +9,9 @@ import (
 //
 // This iterator is not reusable, ranging over it again continues iteration instead of repeating it.
 //
+// Can be finite or infinite, depending on the underlying channel. If it is never closed, the iterator is infinite,
+// otherwise finite.
+//
 // Equals an empty iterator when the channel has been closed and all values have been drained from it.
 func FromChannel[Value any](values <-chan Value) iter.Seq[Value] {
 	return func(yield func(value Value) bool) {
