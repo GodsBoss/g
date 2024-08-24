@@ -25,6 +25,8 @@ func (f WaiterFunc) Wait() {
 }
 
 // Iteration throttles the iteration of another sequence via the given strategy.
+//
+// Finiteness and reusability depend on the underlying sequence.
 func Iteration[Value any](strategy Strategy) func(iter.Seq[Value]) iter.Seq[Value] {
 	return func(sequence iter.Seq[Value]) iter.Seq[Value] {
 		return func(yield func(Value) bool) {
@@ -40,6 +42,8 @@ func Iteration[Value any](strategy Strategy) func(iter.Seq[Value]) iter.Seq[Valu
 }
 
 // Iteration2 throttles the iteration of another sequence via the given strategy.
+//
+// Finiteness and reusability depend on the underlying sequence.
 func Iteration2[First any, Second any](strategy Strategy) func(iter.Seq2[First, Second]) iter.Seq2[First, Second] {
 	return func(sequence iter.Seq2[First, Second]) iter.Seq2[First, Second] {
 		return func(yield func(First, Second) bool) {
