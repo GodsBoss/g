@@ -5,6 +5,10 @@ import "iter"
 // While yields values from a sequence while a predicate holds true.
 //
 // See the pred2 subpackage for pre-defined predicates.
+//
+// Creates finite iterators from infinite iterators.
+//
+// Reusable if underlying sequence is reusable.
 func While[First any, Second any](predicate func(First, Second) bool) func(iter.Seq2[First, Second]) iter.Seq2[First, Second] {
 	return func(sequence iter.Seq2[First, Second]) iter.Seq2[First, Second] {
 		return func(yield func(first First, second Second) bool) {
