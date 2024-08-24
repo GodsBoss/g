@@ -12,6 +12,8 @@ type Integer interface {
 
 // And combines all items from sequence via bitwise AND. Returns -1 (all bits set to 1) if the sequence is empty.
 // Stops iterating as soon as an intermediate value with all bits set to 0 is reached.
+//
+// Runs forever if given an infinite sequence of values such that an intermediate value of 0 is never reached.
 func And[T Integer](sequence iter.Seq[T]) T {
 	var current T = T(minusOne)
 
@@ -27,6 +29,8 @@ func And[T Integer](sequence iter.Seq[T]) T {
 
 // Or combines all items from sequence via bitwise OR. Returns 0 if the sequence is empty.
 // Stops iterating as soon as an intermediate value with all bits set to 1 is reached.
+//
+// Runs forever if given an infinite sequence of values such that an itermediate value with all bits set to 1 is never reached.
 func Or[T Integer](sequence iter.Seq[T]) T {
 	var current T = 0
 
