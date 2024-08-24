@@ -7,6 +7,8 @@ import (
 )
 
 // New creates an iterator backed by a ticker. Drops ticks for slow consumers, just as time.Ticker does.
+//
+// Infinite iterator.
 func New(interval time.Duration) iter.Seq[time.Time] {
 	return func(yield func(time.Time) bool) {
 		t := time.Tick(interval)
