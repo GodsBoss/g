@@ -3,6 +3,8 @@ package iterate
 import "iter"
 
 // ForEach invokes a function for every value from a sequence.
+//
+// Returns only after exhausting the iterator. Does not return for infinite iterators.
 func ForEach[Value any](invoke func(Value)) func(iter.Seq[Value]) {
 	return func(sequence iter.Seq[Value]) {
 		for value := range sequence {
