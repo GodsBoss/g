@@ -6,7 +6,7 @@ import (
 
 // Numeric is a constraint that contains all numeric types.
 type Numeric interface {
-	float32 | float64 | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64
+	~float32 | ~float64 | ~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64
 }
 
 // Sum returns the sum of all the numbers from the sequence. If the sequence is empty, 0 is returned.
