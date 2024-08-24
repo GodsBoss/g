@@ -7,8 +7,7 @@ import (
 
 // FromChannel takes a channel and returns an iterator pulling values from the channel and yielding them.
 //
-// This iterator is partially reusable. If iteration stopped because the for loop that ranged over the iterator
-// encountered a break or return, then ranging again may yield new values from the channel.
+// This iterator is not reusable, ranging over it again continues iteration instead of repeating it.
 //
 // Equals an empty iterator when the channel has been closed and all values have been drained from it.
 func FromChannel[Value any](values <-chan Value) iter.Seq[Value] {
