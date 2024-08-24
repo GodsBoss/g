@@ -5,6 +5,8 @@ import "iter"
 // Filter yields values from a sequence for which a predicate holds true.
 //
 // See the pred subpackage for pre-defined predicates.
+//
+// Finiteness and reusability depend on the underlying sequence.
 func Filter[Value any](predicate func(Value) bool) func(sequence iter.Seq[Value]) iter.Seq[Value] {
 	return func(sequence iter.Seq[Value]) iter.Seq[Value] {
 		return func(yield func(Value) bool) {
