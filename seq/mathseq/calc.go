@@ -10,6 +10,8 @@ type Numeric interface {
 }
 
 // Sum returns the sum of all the numbers from the sequence. If the sequence is empty, 0 is returned.
+//
+// Does not return for infinite sequences.
 func Sum[Number Numeric](sequence iter.Seq[Number]) Number {
 	var sum Number = 0
 
@@ -21,6 +23,8 @@ func Sum[Number Numeric](sequence iter.Seq[Number]) Number {
 }
 
 // Product returns the product of all the numbers from the sequence. If the sequence is empty, 1 is returned.
+//
+// Does not return for infinite sequences.
 func Product[Number Numeric](sequence iter.Seq[Number]) Number {
 	var product Number = 1
 
