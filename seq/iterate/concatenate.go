@@ -4,8 +4,12 @@ import "iter"
 
 // Concatenate takes multiple sequences and concatenates them.
 //
-// Note: If any of the sequences is an infinite sequence,
+// If any of the sequences is an infinite sequence,
 // every sequence after that will never have taken values from.
+//
+// Finite if all underlying iterators are finite, else infinite.
+//
+// Reusable if all underlying iterators are reusable.
 func Concatenate[Value any](sequences ...iter.Seq[Value]) iter.Seq[Value] {
 	return func(yield func(value Value) bool) {
 		cont := true
