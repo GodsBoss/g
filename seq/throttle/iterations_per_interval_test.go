@@ -11,11 +11,11 @@ func TestInvalidIterationsPerIntervalBlueprint(t *testing.T) {
 	t.Parallel()
 
 	testcases := map[string]throttle.IterationsPerInterval{
-		"maximum too low": throttle.IterationsPerInterval{
+		"maximum too low": {
 			Maximum:   -1,
 			Timeframe: time.Second,
 		},
-		"timeframe too low": throttle.IterationsPerInterval{
+		"timeframe too low": {
 			Maximum:   5,
 			Timeframe: -time.Second,
 		},
