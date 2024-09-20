@@ -18,7 +18,7 @@ func Max[Item cmp.Ordered](items iter.Seq[Item]) (result Item, ok bool) {
 // If there is more than one maximal element according to the cmp function, MaxFunc returns the first one. This is the same behaviour as slices.MaxFunc.
 //
 // Does not return for infinite sequences.
-func MaxFunc[Item cmp.Ordered](cmp func(current, next Item) int) func(iter.Seq[Item]) (result Item, ok bool) {
+func MaxFunc[Item any](cmp func(current, next Item) int) func(iter.Seq[Item]) (result Item, ok bool) {
 	return func(sequence iter.Seq[Item]) (result Item, ok bool) {
 		for current := range sequence {
 			if !ok {
@@ -50,7 +50,7 @@ func Min[Item cmp.Ordered](items iter.Seq[Item]) (result Item, ok bool) {
 // If there is more than one minimal element according to the cmp function, MinFunc returns the first one. This is the same behaviour as slices.MinFunc.
 //
 // Does not return for infinite sequences.
-func MinFunc[Item cmp.Ordered](cmp func(current, next Item) int) func(iter.Seq[Item]) (result Item, ok bool) {
+func MinFunc[Item any](cmp func(current, next Item) int) func(iter.Seq[Item]) (result Item, ok bool) {
 	return func(sequence iter.Seq[Item]) (result Item, ok bool) {
 		for current := range sequence {
 			if !ok {
