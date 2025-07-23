@@ -3,6 +3,8 @@ package bigseq
 import (
 	"iter"
 	"math/big"
+
+	"github.com/GodsBoss/g/seq/iterate"
 )
 
 // IntSum produces the sum of the sequence's integers. If the sequence is empty, zero is returned.
@@ -19,9 +21,5 @@ func IntProduct(sequence iter.Seq[*big.Int]) *big.Int {
 func IntOr(sequence iter.Seq[*big.Int]) *big.Int {
 	result := new(big.Int)
 
-	for n := range sequence {
-		result = result.Or(result, n)
-	}
-
-	return result
+	return iterate.Reduce(result, result.Or)(sequence)
 }
