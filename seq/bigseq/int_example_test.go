@@ -56,3 +56,27 @@ func ExampleIntProduct_empty() {
 	// Output:
 	// 1
 }
+
+func ExampleIntOr() {
+	fmt.Println(
+		bigseq.IntOr(
+			slices.Values(
+				[]*big.Int{
+					big.NewInt(12),
+					big.NewInt(4),
+					big.NewInt(16),
+				},
+			),
+		),
+	)
+
+	// Output:
+	// 28
+}
+
+func ExampleIntOr_empty() {
+	fmt.Println(bigseq.IntOr(iterate.Empty[*big.Int]))
+
+	// Output:
+	// 0
+}
