@@ -1,0 +1,34 @@
+package bigseq_test
+
+import (
+	"fmt"
+	"math/big"
+	"slices"
+
+	"github.com/GodsBoss/g/seq/bigseq"
+	"github.com/GodsBoss/g/seq/iterate"
+)
+
+func ExampleRatSum() {
+	fmt.Println(
+		bigseq.RatSum(
+			slices.Values(
+				[]*big.Rat{
+					big.NewRat(2, 3),
+					big.NewRat(-7, 5),
+					big.NewRat(1, 8),
+				},
+			),
+		),
+	)
+
+	// Output:
+	// -73/120
+}
+
+func ExampleRatSum_zero() {
+	fmt.Println(bigseq.RatSum(iterate.Empty[*big.Rat]))
+
+	// Output:
+	// 0/1
+}
