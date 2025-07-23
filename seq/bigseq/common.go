@@ -11,7 +11,6 @@ func sum[Ptr interface {
 	addable[Ptr]
 }, T any](sequence iter.Seq[Ptr]) Ptr {
 	var result Ptr = new(T)
-	result = result.SetInt64(0)
 	return iterate.Reduce(result, result.Add)(sequence)
 }
 
