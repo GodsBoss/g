@@ -16,7 +16,8 @@ func ExampleIntSum() {
 				[]*big.Int{
 					big.NewInt(7),
 					big.NewInt(-3),
-					big.NewInt(22)},
+					big.NewInt(22),
+				},
 			),
 		),
 	)
