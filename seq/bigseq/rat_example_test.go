@@ -26,7 +26,7 @@ func ExampleRatSum() {
 	// -73/120
 }
 
-func ExampleRatSum_zero() {
+func ExampleRatSum_empty() {
 	fmt.Println(bigseq.RatSum(iterate.Empty[*big.Rat]))
 
 	// Output:

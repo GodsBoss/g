@@ -26,7 +26,7 @@ func ExampleIntSum() {
 	// 26
 }
 
-func ExampleIntSum_zero() {
+func ExampleIntSum_empty() {
 	fmt.Println(bigseq.IntSum(iterate.Empty[*big.Int]))
 
 	// Output:
