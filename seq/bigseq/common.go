@@ -12,10 +12,7 @@ func sum[Ptr interface {
 }, T any](sequence iter.Seq[Ptr]) Ptr {
 	var result Ptr = new(T)
 	result = result.SetInt64(0)
-
-	result = iterate.Reduce(result, result.Add)(sequence)
-
-	return result
+	return iterate.Reduce(result, result.Add)(sequence)
 }
 
 type addable[T any] interface {
@@ -29,10 +26,7 @@ func product[Ptr interface {
 }, T any](sequence iter.Seq[Ptr]) Ptr {
 	var result Ptr = new(T)
 	result = result.SetInt64(1)
-
-	result = iterate.Reduce(result, result.Mul)(sequence)
-
-	return result
+	return iterate.Reduce(result, result.Mul)(sequence)
 }
 
 type multiplyable[T any] interface {
