@@ -7,6 +7,7 @@ func sum[Ptr interface {
 	addable[Ptr]
 }, T any](sequence iter.Seq[Ptr]) Ptr {
 	var result Ptr = new(T)
+	result = result.SetInt64(0)
 
 	for n := range sequence {
 		result = result.Add(result, n)
@@ -17,6 +18,7 @@ func sum[Ptr interface {
 
 type addable[T any] interface {
 	Add(T, T) T
+	SetInt64(int64) T
 }
 
 func product[Ptr interface {
