@@ -49,3 +49,10 @@ func ExampleIntProduct() {
 	// Output:
 	// 112
 }
+
+func ExampleIntProduct_empty() {
+	fmt.Println(bigseq.IntProduct(iterate.Empty[*big.Int]))
+
+	// Output:
+	// 1
+}

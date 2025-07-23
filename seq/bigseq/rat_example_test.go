@@ -49,3 +49,10 @@ func ExampleRatProduct() {
 	// Output:
 	// 14/5
 }
+
+func ExampleRatProduct_empty() {
+	fmt.Println(bigseq.RatProduct(iterate.Empty[*big.Rat]))
+
+	// Output:
+	// 1/1
+}
