@@ -7,7 +7,7 @@ import (
 	"github.com/GodsBoss/g/seq/iterate"
 )
 
-func ExampleToSequence() {
+func ExampleFromChannel() {
 	ch := make(chan string, 3)
 	ch <- "This"
 	ch <- "is"
@@ -24,7 +24,7 @@ func ExampleToSequence() {
 	// Sparta!
 }
 
-func ExampleFromSequence_exhaustion() {
+func ExampleIntoChannel_exhaustion() {
 	ch, cancel := iterate.IntoChannel(slices.Values([]string{"This", "is", "Sparta!"}))
 	defer cancel()
 
@@ -38,7 +38,7 @@ func ExampleFromSequence_exhaustion() {
 	// Sparta!
 }
 
-func ExampleFromSequence_cancel() {
+func ExampleIntoChannel_cancel() {
 	numbers := func(yield func(int) bool) {
 		n := 1
 		for yield(n) {
