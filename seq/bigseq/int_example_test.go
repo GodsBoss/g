@@ -32,3 +32,20 @@ func ExampleIntSum_zero() {
 	// Output:
 	// 0
 }
+
+func ExampleIntProduct() {
+	fmt.Println(
+		bigseq.IntProduct(
+			slices.Values(
+				[]*big.Int{
+					big.NewInt(8),
+					big.NewInt(-7),
+					big.NewInt(-2),
+				},
+			),
+		),
+	)
+
+	// Output:
+	// 112
+}

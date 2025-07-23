@@ -32,3 +32,20 @@ func ExampleRatSum_zero() {
 	// Output:
 	// 0/1
 }
+
+func ExampleRatProduct() {
+	fmt.Println(
+		bigseq.RatProduct(
+			slices.Values(
+				[]*big.Rat{
+					big.NewRat(2, -3),
+					big.NewRat(7, 13),
+					big.NewRat(-39, 5),
+				},
+			),
+		),
+	)
+
+	// Output:
+	// 14/5
+}
