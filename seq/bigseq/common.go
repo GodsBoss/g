@@ -1,6 +1,10 @@
 package bigseq
 
-import "iter"
+import (
+	"iter"
+
+	"github.com/GodsBoss/g/seq/iterate"
+)
 
 func sum[Ptr interface {
 	*T
@@ -9,9 +13,7 @@ func sum[Ptr interface {
 	var result Ptr = new(T)
 	result = result.SetInt64(0)
 
-	for n := range sequence {
-		result = result.Add(result, n)
-	}
+	result = iterate.Reduce(result, result.Add)(sequence)
 
 	return result
 }
@@ -28,9 +30,7 @@ func product[Ptr interface {
 	var result Ptr = new(T)
 	result = result.SetInt64(1)
 
-	for n := range sequence {
-		result = result.Mul(result, n)
-	}
+	result = iterate.Reduce(result, result.Mul)(sequence)
 
 	return result
 }
